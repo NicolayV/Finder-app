@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { useForm } from 'react-hook-form';
+//import { CancelPresentationOutlined } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -20,13 +21,42 @@ export const RegistrationForm = () => {
 
 	console.log("Errors", errors)
 
+
+
+	const getLocalStorage = () => {
+		const getArryUsers = JSON.parse(localStorage.getItem("arryUsers"))
+		return getArryUsers
+	}
+
 	const onSubmit = (data) => {
-		console.log('Succes', data)
-		localStorage.setItem('register', JSON.stringify(data))
+		const arryUsers = JSON.parse(localStorage.getItem("arryUsers")) || []
+
+		if (arryUsers.length === 0) {
+			arryUsers.push(data)
+			localStorage.setItem("arryUsers", JSON.stringify(arryUsers))
+		}
+
+		if (arryUsers.length > 0) {
+			const regUser = data
+			const allRegUsers = getLocalStorage()
+			const check = allRegUsers.filter(user => (user.login === regUser.login && user.password === regUser.password))
+			console.log('check', check.length)
+
+			if (check.length === 0) {
+				console.log('Пользователь не зарегистрирован', data)
+				arryUsers.push(data)
+				localStorage.setItem("arryUsers", JSON.stringify(arryUsers))
+
+			} else {
+				console.log('Пользователь зарегистрирован')
+			}
+
+		}
 	}
 
 
 	return (
+
 		<form onSubmit={handleSubmit(onSubmit)} className={styles.root}>
 			<div>
 				<TextField
@@ -34,7 +64,8 @@ export const RegistrationForm = () => {
 					label="Login:" placeholder="Enter your login" variant="outlined" margin="normal" multiline name="login" id="login"
 				></TextField>
 			</div>
-			{errors.login && "Обязательное поле для заполнения"}
+			{errors.login?.type === 'required' && "Обязательное поле для заполнения"}
+			{errors.login?.type === 'minLength' && "Логин должен быть длиннее 6 символов"}
 
 			<div>
 				<TextField
@@ -42,6 +73,7 @@ export const RegistrationForm = () => {
 					label="E-mail:" placeholder="Eemail@example.com" variant="outlined" margin="normal" multiline name="email" id="email"
 				></TextField>
 			</div>
+
 			{errors.email?.type === 'pattern' && "Неправильный адрес электронной почты"}
 			{errors.email?.type === 'required' && "Обязательное поле для заполнения"}
 
@@ -72,10 +104,16 @@ export const RegistrationForm = () => {
 			{errors.confirmPassword?.type === 'maxLength' && "Пароль должен быть длиннее 6 символов и короче 12"}
 			{errors.confirmPassword && <p>{errors.confirmPassword.message}</p>}
 
-			{errors == {} && "Все ок"}
 			<div>
-				<Button variant="contained" color="secondary" type="submit">Submit</Button>
+				<Button variant="contained" color="primary" type="submit">Submit</Button>
 			</div>
-		</form>
+
+			{/* <div >
+				<Button
+					onClick={getLocalStorage}
+					variant="contained" color="secondary" type="submit">Storage</Button>
+			</div > */}
+
+		</form >
 	)
 }
