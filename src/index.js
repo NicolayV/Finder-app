@@ -5,7 +5,7 @@ import App from './App';
 import 'fontsource-roboto';
 import { createStore, compose, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
-import rootRducer from './store/reducers/rooyReducer'
+import rootRducer from './store/reducers/rootReducer'
 import thunk from 'redux-thunk';
 
 const composeEnhancers =
@@ -21,8 +21,9 @@ const app = (
   <Provider store={store}>
     <App />
   </Provider>
-
 )
+// нужно оборачивать наш приложение в StrictMode?
+//<React.StrictMode></React.StrictMode>
 
 ReactDOM.render(app, document.getElementById('root'));
 

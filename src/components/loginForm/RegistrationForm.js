@@ -3,7 +3,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { useForm } from 'react-hook-form';
-//import { CancelPresentationOutlined } from '@material-ui/icons';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { actionCreators } from '../../store/actions/allActionCreators';
+
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -12,14 +16,22 @@ const useStyles = makeStyles((theme) => ({
 	}
 }))
 
+
 export const RegistrationForm = () => {
+
+	const state = useSelector(state => state)
+	const dispatch = useDispatch()
+
+	const { authLogOut, authSucces } = bindActionCreators(actionCreators, dispatch)
+
+
 	const styles = useStyles()
 	const { register, formState: { errors }, handleSubmit, watch } = useForm();
 
 	const password = useRef({});
 	password.current = watch("password", "");
 
-	console.log("Errors", errors)
+	//console.log("Errors", errors)
 
 
 
@@ -34,21 +46,24 @@ export const RegistrationForm = () => {
 		if (arryUsers.length === 0) {
 			arryUsers.push(data)
 			localStorage.setItem("arryUsers", JSON.stringify(arryUsers))
+			authSucces(data)
 		}
 
 		if (arryUsers.length > 0) {
 			const regUser = data
 			const allRegUsers = getLocalStorage()
 			const check = allRegUsers.filter(user => (user.login === regUser.login && user.password === regUser.password))
-			console.log('check', check.length)
+			//	console.log('check', check.length)
 
 			if (check.length === 0) {
-				console.log('Пользователь не зарегистрирован', data)
+				console.log('Пользователь не зарегистрирован')
 				arryUsers.push(data)
 				localStorage.setItem("arryUsers", JSON.stringify(arryUsers))
-
+				authSucces(data)
 			} else {
-				console.log('Пользователь зарегистрирован')
+				console.log('Пользователь уже зарегистрирован')
+				authLogOut(data)
+
 			}
 
 		}
@@ -108,11 +123,7 @@ export const RegistrationForm = () => {
 				<Button variant="contained" color="primary" type="submit">Submit</Button>
 			</div>
 
-			{/* <div >
-				<Button
-					onClick={getLocalStorage}
-					variant="contained" color="secondary" type="submit">Storage</Button>
-			</div > */}
+
 
 		</form >
 	)

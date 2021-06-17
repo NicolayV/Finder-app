@@ -3,7 +3,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { useForm } from 'react-hook-form';
-//import { connect } from 'react-redux'
+
+import { useDispatch, useSelector } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { actionCreators } from '../../store/actions/allActionCreators';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -13,31 +16,46 @@ const useStyles = makeStyles((theme) => ({
 	}
 }))
 
-//const LoginForm = () => {
+
 export const LoginForm = () => {
+
+	const state = useSelector(state => state)
+	const dispatch = useDispatch()
+
+	const { authLogOut, authSucces } = bindActionCreators(actionCreators, dispatch)
 
 
 	const styles = useStyles()
 
 	const { register, formState: { errors }, handleSubmit } = useForm();
 
-	console.log("Errors", errors)
+	//console.log("Errors", errors)
 
 	const onSubmit = (data) => {
 
 		const loginedUser = data
-		console.log(loginedUser)
+		//console.log(loginedUser.login)
 
 		const getLocalStorage = () => {
 			const getArryUsers = JSON.parse(localStorage.getItem("arryUsers"))
 			const arryOfUserLog = getArryUsers.map((user) => user.login)
-			console.log(arryOfUserLog)
+			//console.log(arryOfUserLog)
 			return arryOfUserLog
 
 		}
 		const regLocalStore = getLocalStorage()
 		const checkСontains = regLocalStore.filter(filterLog => (filterLog === loginedUser.login && true))
-		console.log('Пользователь зарегистрирован', checkСontains)
+		if (checkСontains.length > 0) {
+			console.log('Пользователь зарегистрирован')
+			authSucces(data)
+			//console.log(data)
+			console.log('state', state)
+		}
+		if (checkСontains.length === 0) {
+			//проверить параметры
+			authLogOut(loginedUser.login)
+			console.log('Указаный пользователь не зарегистрирован')
+		}
 	}
 
 	return (
@@ -72,17 +90,10 @@ export const LoginForm = () => {
 			<div>
 				<Button variant="contained" color="primary" type="submit">Submit</Button>
 			</div>
+			{/* {errors && console.log()} */}
 		</form>
 
 	)
 }
 
 
-
-// const mapStateToProps = state => {
-// 	return {
-// 		auth: state.auth.auth
-// 	}
-// }
-
-// export default connect(mapStateToProps)(LoginForm)
