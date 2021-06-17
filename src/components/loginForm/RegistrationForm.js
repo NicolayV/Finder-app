@@ -76,7 +76,7 @@ export const RegistrationForm = () => {
 			<div>
 				<TextField
 					{...register("login", { required: true, minLength: 6, })}
-					label="Login:" placeholder="Enter your login" variant="outlined" margin="normal" multiline name="login" id="login"
+					label="Login:" placeholder="Enter your login" variant="outlined" margin="normal" multiline name="login" id="login" fullWidth
 				></TextField>
 			</div>
 			{errors.login?.type === 'required' && "Обязательное поле для заполнения"}
@@ -85,7 +85,7 @@ export const RegistrationForm = () => {
 			<div>
 				<TextField
 					{...register("email", { required: true, pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, })}
-					label="E-mail:" placeholder="Eemail@example.com" variant="outlined" margin="normal" multiline name="email" id="email"
+					label="E-mail:" placeholder="Eemail@example.com" variant="outlined" margin="normal" multiline name="email" id="email" fullWidth
 				></TextField>
 			</div>
 
@@ -95,7 +95,7 @@ export const RegistrationForm = () => {
 			<div>
 				<TextField
 					{...register("password", { required: true, minLength: 6, maxLength: 12 })}
-					type="number" label="Password:" placeholder="Enter your password" variant="outlined" margin="normal" multiline name="password" id="password"
+					type="number" label="Password:" placeholder="Enter your password" variant="outlined" margin="normal" multiline fullWidth name="password" id="password"
 				></TextField>
 			</div>
 			{errors.password?.type === 'required' && "Обязательное поле для заполнения"}
@@ -111,7 +111,7 @@ export const RegistrationForm = () => {
 							validate: value =>
 								value === password.current || "Пароль не совпадает"
 						})}
-					type="number" label="Confirm Password:" placeholder="Confirm your password" variant="outlined" margin="normal" multiline name="confirmPassword" id="confirmPassword"
+					type="number" label="Confirm Password:" placeholder="Confirm your password" variant="outlined" margin="normal" multiline name="confirmPassword" id="confirmPassword" fullWidth
 				></TextField>
 			</div>
 			{errors.confirmPassword?.type === 'required' && "Обязательное поле для заполнения"}
@@ -120,7 +120,7 @@ export const RegistrationForm = () => {
 			{errors.confirmPassword && <p>{errors.confirmPassword.message}</p>}
 
 			<div>
-				<Button variant="contained" color="primary" type="submit">Submit</Button>
+				<Button fullWidth variant="contained" color="primary" type="submit">Submit</Button>
 			</div>
 
 

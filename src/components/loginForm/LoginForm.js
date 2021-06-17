@@ -7,12 +7,14 @@ import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../store/actions/allActionCreators';
+import { Box } from '@material-ui/core';
 
 
 const useStyles = makeStyles((theme) => ({
 	root: {
 		width: "100%",
 		marginTop: theme.spacing(1),
+
 	}
 }))
 
@@ -60,37 +62,40 @@ export const LoginForm = () => {
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit)} className={styles.root}>
-			<div>
-				<TextField
-					{...register("login", { required: true })}
-					label="Login:" placeholder="Enter your login" variant="outlined" margin="normal" multiline
-				></TextField>
-			</div>
-			{errors.login && "Обязательное поле для заполнения"}
+			<Box>
 
-			<div>
-				<TextField
-					{...register("password", { required: true, minLength: 6, maxLength: 12 })}
-					type="number" label="Password:" placeholdeßr="Enter your password" variant="outlined" margin="normal" multiline
-				></TextField>
-			</div>
-			{errors.password?.type === 'required' && "Обязательное поле для заполнения"}
-			{errors.password?.type === 'minLength' && "Пароль должен быть длиннее 6 символов и короче 12"}
-			{errors.password?.type === 'maxLength' && "Пароль должен быть длиннее 6 символов и короче 12"}
+				<div>
+					<TextField
+						{...register("login", { required: true })}
+						label="Login:" placeholder="Enter your login" variant="outlined" margin="normal" multiline fullWidth
+					></TextField>
+				</div>
+				{errors.login && "Обязательное поле для заполнения"}
 
-			<div>
-				<TextField
-					{...register("email", { required: true, pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, })}
-					label="E-mail:" placeholder="Eemail@example.com" variant="outlined" margin="normal" multiline
-				></TextField>
-			</div>
-			{errors.email?.type === 'pattern' && "Неправильный адрес электронной почты"}
-			{errors.email?.type === 'required' && "Обязательное поле для заполнения"}
+				<div>
+					<TextField
+						{...register("password", { required: true, minLength: 6, maxLength: 12 })}
+						type="number" label="Password:" placeholdeßr="Enter your password" variant="outlined" margin="normal" multiline fullWidth
+					></TextField>
+				</div>
+				{errors.password?.type === 'required' && "Обязательное поле для заполнения"}
+				{errors.password?.type === 'minLength' && "Пароль должен быть длиннее 6 символов и короче 12"}
+				{errors.password?.type === 'maxLength' && "Пароль должен быть длиннее 6 символов и короче 12"}
 
-			<div>
-				<Button variant="contained" color="primary" type="submit">Submit</Button>
-			</div>
-			{/* {errors && console.log()} */}
+				<div>
+					<TextField
+						{...register("email", { required: true, pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, })}
+						label="E-mail:" placeholder="Eemail@example.com" variant="outlined" margin="normal" multiline fullWidth
+					></TextField>
+				</div>
+				{errors.email?.type === 'pattern' && "Неправильный адрес электронной почты"}
+				{errors.email?.type === 'required' && "Обязательное поле для заполнения"}
+
+				<div>
+					<Button fullWidth variant="contained" color="primary" type="submit">Submit</Button>
+				</div>
+				{/* {errors && console.log()} */}
+			</Box>
 		</form>
 
 	)
