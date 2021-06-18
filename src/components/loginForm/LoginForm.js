@@ -12,8 +12,10 @@ import { Box } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
-		width: "100%",
+		width: "88%",
 		marginTop: theme.spacing(1),
+		paddingLeft: 20,
+		paddingBottom: 20,
 
 	}
 }))
