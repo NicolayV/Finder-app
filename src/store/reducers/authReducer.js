@@ -9,13 +9,16 @@ const initialState = {
 
 
 const authReducer = (state = initialState, action) => {
-	switch (action.type) {
+	//const { type, payload: { login, password } } = action // ошибка login undefined почему?
+	const { type, payload } = action
+
+	switch (type) {
 		case AUTH_SUCCES:
 			return {
 				...state,
 				auth: true,
-				userLogin: action.payload.login,
-				userPassword: action.payload.password
+				userLogin: payload.login,
+				userPassword: payload.password
 			}
 		case AUTH_LOGOUT:
 			return {

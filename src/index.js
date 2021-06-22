@@ -17,13 +17,11 @@ const composeEnhancers =
 const store = createStore(rootRducer, composeEnhancers(applyMiddleware(thunk)))
 
 const app = (
-  // компонент провайдер позволяет нам работать с redux, с помощью provider передаем наш store приложению
   <Provider store={store}>
     <App />
   </Provider>
 )
-// нужно оборачивать наш приложение в StrictMode?
-//<React.StrictMode></React.StrictMode>
+
 
 ReactDOM.render(app, document.getElementById('root'));
 
