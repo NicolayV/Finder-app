@@ -1,7 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { MainForm } from './components/mainForm'
-import { Auth } from './pages/auth';
+import { MainForm } from './pages/auth'
+import { Movies } from './pages/movies';
 
 export default function App() {
 
@@ -11,7 +11,7 @@ export default function App() {
       <Router>
         <Switch>
           <Route exact path="/" component={MainForm} />
-          <Route path="/Step2" component={Auth} />
+          <Route path="/Step2" component={Movies} />
         </Switch>
       </Router>
     </>

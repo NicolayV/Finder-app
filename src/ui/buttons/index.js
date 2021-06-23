@@ -1,20 +1,15 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import Button from "@material-ui/core/Button";
-import { makeStyles } from "@material-ui/core/styles";
+import { useStyles } from './style'
 
-const useStyles = makeStyles((theme) => ({
-	root: {
-		margin: theme.spacing(3, 0, 2),
-	},
-}));
-
-export const UiButton = ({ children, ...props }) => {
+export const UiButton = forwardRef(({ children, ...props }, ref) => {
 
 	const styles = useStyles()
 
 	return (
 		<Button
 			{...props}
+			inputRef={ref}
 			type="submit"
 			fullWidth={true}
 			variant="contained"
@@ -24,4 +19,4 @@ export const UiButton = ({ children, ...props }) => {
 			{children}
 		</Button>
 	);
-};
+});
