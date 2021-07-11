@@ -1,9 +1,16 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 export const useStyles = makeStyles((theme) => ({
+  // root: {
+  //   margin: 5,
+  //   width: 300,
+  // },
   root: {
-    margin: 5,
-    width: 300,
+    margin: 40,
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "space-around",
+    maxWidth: "100%",
   },
   media: {
     minHeight: 250,

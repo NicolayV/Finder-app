@@ -22,37 +22,46 @@ export const Movies = () => {
 
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
-  const { authLogOut } = bindActionCreators(actionCreators, dispatch);
+  const { authLogOut, movieDataBase } = bindActionCreators(
+    actionCreators,
+    dispatch
+  );
 
   const [content, setContent] = useState([]);
+  console.log(content);
   const [page, setPage] = useState(1);
 
-  const handleAuthLogOut = () => {
+  const handlerAuthLogOut = () => {
     isAuthUser(false);
     authLogOut();
     return setTimeout(() => history.push("/"), 500);
   };
 
-  // const fetchSearh = async () => {
-  //   await axios.get(
-  //     `https://api.themoviedb.org/3/search/movie?api_key=${process.env.REACT_APP_API_KEY}&language=en-US&page=1&include_adult=false`
-  //   );
-  //   console.log(fetchSearh);
+  const fetchSearh = async (searchText) => {
+    const { data } = await axios.get(
+      `https://api.themoviedb.org/3/search/movie?api_key=${process.env.REACT_APP_API_KEY}&query=${searchText}`
+    );
+    console.log(data.results.length);
+    console.log(data);
+    setContent(data.results);
+    return data;
+  };
+
+  // const deb = useCallback(
+  //   debounce((text) => fetchSearh(text), 1000),
+  //   []
+  // );
+  // const handlerSearch = (text) => {
+  //   deb(text);
   // };
 
-  const handlerSearch = (e) => {
-    const deb = debounce(() => {
-      console.log(e.target.value);
-      // fetchSearh();
-    }, 1000);
-
-    deb();
-  };
+  const handlerSearch = debounce((text) => fetchSearh(text), 1000);
 
   useEffect(() => {
     const fetchTrending = async () => {
       const { data } = await getMovies(page);
       setContent(content.concat(Array.from(data.results)));
+      movieDataBase(page);
     };
     fetchTrending();
   }, [page]);
@@ -62,8 +71,8 @@ export const Movies = () => {
   return (
     <>
       <Header
-        loginName={state.auth.userLogin}
-        handleAuthLogOut={handleAuthLogOut}
+        loginName={state.auth.userLogin || state.auth.isAuth}
+        handlerAuthLogOut={handlerAuthLogOut}
         handlerSearch={handlerSearch}
       />
 

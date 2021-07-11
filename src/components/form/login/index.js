@@ -43,7 +43,7 @@ export const LoginForm = () => {
         );
 
       if (currentUser) {
-        isAuthUser(true);
+        isAuthUser(login);
         authSucces({ login });
         history.push("/step2");
       } else {
