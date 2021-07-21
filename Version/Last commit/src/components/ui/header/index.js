@@ -27,7 +27,7 @@ function HideOnScroll(props) {
 }
 
 export const Header = (props) => {
-  const { loginName, handlerAuthLogOut, handlerSearch, handlerTest } = props;
+  const { loginName, handlerAuthLogOut, handlerSearch } = props;
   const classes = useStyles();
 
   return (
@@ -39,9 +39,6 @@ export const Header = (props) => {
             <Typography variant="h6" className={classes.title}>
               Login: {loginName}
             </Typography>
-            <Button variant="contained" color="secondary" onClick={handlerTest}>
-              test
-            </Button>
             <div className={classes.search}>
               <div className={classes.searchIcon}>
                 <SearchIcon />
@@ -56,7 +53,6 @@ export const Header = (props) => {
                 inputProps={{ "aria-label": "search" }}
               />
             </div>
-
             <Button onClick={handlerAuthLogOut} color="inherit">
               sign out
             </Button>

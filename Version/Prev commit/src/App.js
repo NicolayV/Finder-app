@@ -6,17 +6,18 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
-import { MainForm } from "./pages/authPage/index";
+import { MainForm } from "./pages/auth";
 import { Movies } from "./pages/movies";
-import { MovieCard } from "./pages/movieCard/movieCard";
 
-// 1) redux-thunk for async operations in redux
-// 2) base url for axios
-// 3) movie detail page
-// 4) search movies div below input
+// done 1) autologin after reload
+// +-done 2) search films with debounce. Debounce from lodash. Only debounce from lodash
+// done 3) infinity scroll or pagination for movies
+// 4) redux-thunk for async operations in redux
+// done 5) flex-wrap or grid
+// 6) base url for axios
 
 const GuardRoute = ({ children }) => {
-  const isAuth = useSelector((state) => state.appDB.user.isAuth);
+  const isAuth = useSelector((state) => state.auth.isAuth);
   return isAuth ? children : <Redirect to="/" />;
 };
 
@@ -39,7 +40,6 @@ export default function App() {
           <Route exact path="/" component={MainForm} />
           <GuardRoute>
             <Route path="/Step2" component={Movies} />
-            <Route path="/Step3" component={MovieCard} />
           </GuardRoute>
         </Switch>
       </Router>

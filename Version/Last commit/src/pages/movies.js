@@ -12,7 +12,6 @@ import { Header } from "../components/ui/header";
 import { Container } from "@material-ui/core";
 import { useStyles } from "./style";
 import { getMovies, isAuthUser } from "../apiMovies";
-
 import debounce from "lodash.debounce";
 import InfiniteScroll from "react-infinite-scroll-component";
 import axios from "axios";
@@ -23,11 +22,14 @@ export const Movies = () => {
 
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
-  const { authLogOut, setTrendingMovieListPage, setTrendingMovieList } =
-    bindActionCreators(actionCreators, dispatch);
+  const { authLogOut, movieDataBase } = bindActionCreators(
+    actionCreators,
+    dispatch
+  );
 
   const [content, setContent] = useState([]);
-  const page = state.appDB.trendingMovie.trendingCurrentPage;
+  console.log(content);
+  const [page, setPage] = useState(1);
 
   const handlerAuthLogOut = () => {
     isAuthUser(false);
@@ -42,47 +44,43 @@ export const Movies = () => {
     console.log(data.results.length);
     console.log(data);
     setContent(data.results);
-
     return data;
   };
 
+  // const deb = useCallback(
+  //   debounce((text) => fetchSearh(text), 1000),
+  //   []
+  // );
+  // const handlerSearch = (text) => {
+  //   deb(text);
+  // };
+
   const handlerSearch = debounce((text) => fetchSearh(text), 1000);
-  //
-  //
-  const handlerTest = () => setTrendingMovieList();
-  //
-  //
+
   useEffect(() => {
     const fetchTrending = async () => {
       const { data } = await getMovies(page);
       setContent(content.concat(Array.from(data.results)));
+      movieDataBase(page);
     };
     fetchTrending();
-
-    // setTrendingMovieList();
-    // setContent(
-    //   content.concat(Array.from(state.appDB.trendingMovie.trendingMovieList))
-    // );
   }, [page]);
 
-  const handlerSetPage = () => {
-    // setPage(page + 1);
-    setTrendingMovieListPage(page + 1);
-  };
+  const handleSetPage = () => setPage(page + 1);
 
   return (
     <>
       <Header
-        loginName={state.appDB.user.userLogin || state.appDB.user.isAuth}
+        loginName={state.auth.userLogin || state.auth.isAuth}
         handlerAuthLogOut={handlerAuthLogOut}
         handlerSearch={handlerSearch}
-        handlerTest={handlerTest}
       />
+
       <Container className={classes.root}>
         <InfiniteScroll
           className={classes.root}
           dataLength={content.length}
-          next={handlerSetPage}
+          next={handleSetPage}
           hasMore={true}
         >
           {content &&
