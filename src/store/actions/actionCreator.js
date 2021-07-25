@@ -4,7 +4,7 @@ import { getIsAuthUser, getMovies } from "../../apiMovies";
 const SET_USER_LOG_IN = "USER_LOGIN_IN";
 const SET_USER_LOG_OUT = "USER_LOGIN_OUT";
 //
-const GET_TRENDING_MOVIE_LIST = "GET_TRENDING_MOVIE_LIST";
+const SET_TRENDING_MOVIE_LIST = "SET_TRENDING_MOVIE_LIST";
 const SET_TRENDING_MOVIE_LIST_PAGE = "SET_TRENDING_MOVIE_LIST_PAGE";
 //
 const GET_SEARCHED_MOVIE_LIST = "GET_SEARCHED_MOVIE_LIST";
@@ -54,7 +54,7 @@ const appDbReducer = (state = initialState, { type, payload }) => {
           isAuth: getIsAuthUser(),
         },
       };
-    case GET_TRENDING_MOVIE_LIST:
+    case SET_TRENDING_MOVIE_LIST:
       return {
         ...state,
         trendingMovie: {
@@ -112,40 +112,14 @@ export const authLogOut = () => {
     });
   };
 };
-export const getTrendingMovieList = (payload) => {
+export const setTrendingMovieList = (payload) => {
   return (dispatch) => {
     dispatch({
-      type: GET_TRENDING_MOVIE_LIST,
+      type: SET_TRENDING_MOVIE_LIST,
       payload,
     });
   };
 };
-export const setTrendingMovieList = () => {
-  return (dispath, getState) => {
-    const { trendingCurrentPage } = getState().appDB.trendingMovie;
-    getMovies(trendingCurrentPage).then(({ data }) => {
-      // console.log("test ", trendingCurrentPage);
-      // console.log("data ", data.results);
-
-      dispath(getTrendingMovieList(data));
-    });
-  };
-};
-
-// export const moviesFetchData = () => {
-//   return (dispatch, getState) => {
-//     const { page } = getState().movies;
-
-//     fetchMovie("movie/popular?", "&page=" + page)
-//       .then((data) => {
-//         dispatch(fetchMoviesSuccess(data));
-//         dispatch(pageNumberHandler(page + 1));
-//       })
-//       .catch((error) => {
-//         dispatch(setSnackbar({ message: error.message, type: "error" }));
-//       });
-//   };
-// };
 
 export const setTrendingMovieListPage = (payload) => {
   return (dispatch) => {
@@ -176,11 +150,14 @@ export const setSearchedMovieListPage = (payload) => {
 //
 // Side effects
 //
+export const setCurrentTrendingMovieList = () => {
+  return (dispath, getState) => {
+    const { trendingCurrentPage, trendingMovieList } =
+      getState().appDB.trendingMovie;
 
-// // не работает вызов функции
-// export const trendingMovieList = async (props) => {
-//   // console.log("test");
-//   const { data } = await getMovies(props);
-//   getTrendingMovieList(data);
-//   console.log("data: ", data);
-// };
+    getMovies(trendingCurrentPage).then(({ data }) => {
+      data.results = trendingMovieList.concat(data.results);
+      dispath(setTrendingMovieList(data));
+    });
+  };
+};
