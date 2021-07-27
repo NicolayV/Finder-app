@@ -7,7 +7,6 @@ import CardHeader from "@material-ui/core/CardHeader";
 import CardMedia from "@material-ui/core/CardMedia";
 import { Button } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import { getDetails } from "../../apiMovies/index";
 
 import { useDispatch } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -20,13 +19,11 @@ export const SingleContent = ({ poster, title, date, id }) => {
   let history = useHistory();
 
   const dispatch = useDispatch();
-  const { movieCardDetail } = bindActionCreators(actionCreators, dispatch);
+  const { getMovieDetailById } = bindActionCreators(actionCreators, dispatch);
 
-  const handlerMovieCard = async () => {
-    const { data } = await getDetails(id);
-    console.log(id, data);
-    movieCardDetail(data);
-    history.push("/step3");
+  const handlerMovieCard = () => {
+    getMovieDetailById(id);
+    history.push("/film/" + id);
   };
 
   return (

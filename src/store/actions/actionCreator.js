@@ -1,5 +1,10 @@
 // import axios from "axios";
-import { getIsAuthUser, getMovies } from "../../apiMovies";
+import {
+  getIsAuthUser,
+  getMovies,
+  getDetails,
+  getSearchMovie,
+} from "../../apiMovies";
 
 const SET_USER_LOG_IN = "USER_LOGIN_IN";
 const SET_USER_LOG_OUT = "USER_LOGIN_OUT";
@@ -7,10 +12,10 @@ const SET_USER_LOG_OUT = "USER_LOGIN_OUT";
 const SET_TRENDING_MOVIE_LIST = "SET_TRENDING_MOVIE_LIST";
 const SET_TRENDING_MOVIE_LIST_PAGE = "SET_TRENDING_MOVIE_LIST_PAGE";
 //
-const GET_SEARCHED_MOVIE_LIST = "GET_SEARCHED_MOVIE_LIST";
+const SET_SEARCHED_MOVIE_LIST = "SET_SEARCHED_MOVIE_LIST";
 const SET_SEARCHED_MOVIE_LIST_PAGE = "SET_SEARCHED_MOVIE_LIST_PAGE";
 //
-//
+const SET_MOVIE_DETAIL_BY_ID = "SET_MOVIE_DETAIL_BY_ID";
 //
 //
 const initialState = {
@@ -29,6 +34,7 @@ const initialState = {
     searchedMovieList: [],
     total_result: 0,
   },
+  currentMovieDetail: [],
 };
 //
 //
@@ -71,10 +77,11 @@ const appDbReducer = (state = initialState, { type, payload }) => {
           trendingCurrentPage: payload,
         },
       };
-    case GET_SEARCHED_MOVIE_LIST:
+    case SET_SEARCHED_MOVIE_LIST:
       return {
         ...state,
         searchedMovie: {
+          ...state.searchedMovie,
           searchedMovieList: payload.results,
           total_result: payload.total_results,
         },
@@ -86,6 +93,11 @@ const appDbReducer = (state = initialState, { type, payload }) => {
           ...state.searchedMovie,
           searchedCurrentPage: payload,
         },
+      };
+    case SET_MOVIE_DETAIL_BY_ID:
+      return {
+        ...state,
+        currentMovieDetail: payload,
       };
 
     default:
@@ -129,10 +141,10 @@ export const setTrendingMovieListPage = (payload) => {
     });
   };
 };
-export const getSearchedMovieList = (payload) => {
+export const setSearchedMovieList = (payload) => {
   return (dispatch) => {
     dispatch({
-      type: GET_SEARCHED_MOVIE_LIST,
+      type: SET_SEARCHED_MOVIE_LIST,
       payload,
     });
   };
@@ -141,6 +153,14 @@ export const setSearchedMovieListPage = (payload) => {
   return (dispatch) => {
     dispatch({
       type: SET_SEARCHED_MOVIE_LIST_PAGE,
+      payload,
+    });
+  };
+};
+export const setMovieDetailById = (payload) => {
+  return (dispatch) => {
+    dispatch({
+      type: SET_MOVIE_DETAIL_BY_ID,
       payload,
     });
   };
@@ -158,6 +178,28 @@ export const setCurrentTrendingMovieList = () => {
     getMovies(trendingCurrentPage).then(({ data }) => {
       data.results = trendingMovieList.concat(data.results);
       dispath(setTrendingMovieList(data));
+    });
+  };
+};
+//
+//
+export const getMovieDetailById = (id) => {
+  return (dispath) => {
+    getDetails(id).then(({ data }) => {
+      dispath(setMovieDetailById(data));
+    });
+  };
+};
+//
+//
+export const getSearchedMovieList = (searchText) => {
+  return (dispath, getState) => {
+    const { searchedCurrentPage, searchedMovieList } =
+      getState().appDB.searchedMovie;
+
+    getSearchMovie(searchText, searchedCurrentPage).then(({ data }) => {
+      data.results = searchedMovieList.concat(data.results);
+      dispath(setSearchedMovieList(data));
     });
   };
 };
