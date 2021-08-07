@@ -1,10 +1,8 @@
-// import axios from "axios";
 import {
   getIsAuthUser,
   getMovies,
   getDetails,
   getSearchMovie,
-  getFavoritesMovieLS,
   setFavoritesMovieLS,
 } from "../../apiMovies";
 
@@ -247,6 +245,10 @@ export const setFavoritesMovie = (id) => {
         favoritesMovie.push(data);
         setFavoritesMovieLS(favoritesMovie);
         dispath(setFavoritesMovieById(favoritesMovie));
+      } else {
+        const withoutFavMovie = favoritesMovie.filter((item) => item.id !== id);
+        setFavoritesMovieLS(withoutFavMovie);
+        dispath(setFavoritesMovieById(withoutFavMovie));
       }
     });
   };

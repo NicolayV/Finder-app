@@ -16,9 +16,7 @@ export const Movies = () => {
   const classes = useStyles();
   let history = useHistory();
 
-  const { user, trendingMovie, searchedMovie } = useSelector(
-    (state) => state.appDB
-  );
+  const { user, trendingMovie } = useSelector((state) => state.appDB);
   const dispatch = useDispatch();
   const {
     authLogOut,
@@ -34,6 +32,7 @@ export const Movies = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [trendingMovie.trendingCurrentPage]
   );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => setFavoritesMovieById(getFavoritesMovieLS()), []);
   const [toggle, setToggle] = useState(false);
 
@@ -53,7 +52,6 @@ export const Movies = () => {
   };
   const handlerMenuOpen = () => {
     setToggle(!toggle);
-    console.log("toggle: ", toggle);
   };
   const handlerMenuClose = () => setToggle(!toggle);
 

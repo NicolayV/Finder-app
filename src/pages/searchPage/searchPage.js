@@ -5,7 +5,7 @@ import { actionCreators } from "../../store/actions/allActionCreators";
 import { useHistory } from "react-router-dom";
 import { SingleContent } from "../../components/contentCard/index";
 import { Header } from "../../components/ui/header";
-import { Container } from "@material-ui/core";
+import { Button, Container } from "@material-ui/core";
 import { useStyles } from "./style";
 import { isAuthUser } from "../../apiMovies";
 // import debounce from "lodash.debounce";
@@ -25,6 +25,7 @@ export const SearchPage = () => {
 
   useEffect(() => {
     setSearchedMovie();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchedCurrentPage]);
   const handlerAuthLogOut = () => {
     isAuthUser(false);
@@ -37,7 +38,7 @@ export const SearchPage = () => {
   };
 
   const handlerTest = () => {
-    console.log(searchText);
+    history.push("/step2");
   };
 
   return (

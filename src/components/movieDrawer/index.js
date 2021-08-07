@@ -1,5 +1,5 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Drawer from "@material-ui/core/Drawer";
 import {
   Divider,
@@ -11,12 +11,14 @@ import {
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 
-import { useStyles } from "../../pages/movieCard/style";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import BookmarksIcon from "@material-ui/icons/Bookmarks";
+import { bindActionCreators } from "redux";
+import { actionCreators } from "../../store/actions/allActionCreators";
 
-export const MovieDrawer = (props) => {
-  const classes = useStyles();
+export const MovieDrawer = (props, { match, history }) => {
+  const dispatch = useDispatch();
+  const { setFavoritesMovie } = bindActionCreators(actionCreators, dispatch);
   const { favoritesMovie } = useSelector((state) => state.appDB);
 
   return (
@@ -30,8 +32,11 @@ export const MovieDrawer = (props) => {
                 <BookmarksIcon color="primary" />
               </ListItemIcon>
               <ListItemText primary={item.title} />
-              <IconButton color="secondary" aria-label="delete">
-                <FavoriteIcon />
+              <IconButton
+                aria-label="add to favorites"
+                onClick={() => setFavoritesMovie(item.id)}
+              >
+                <FavoriteIcon color="secondary" />
               </IconButton>
             </ListItem>
           ))}
