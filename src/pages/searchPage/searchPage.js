@@ -38,7 +38,7 @@ export const SearchPage = () => {
   };
 
   const handlerTest = () => {
-    history.push("/step2");
+    history.push("/main");
   };
 
   return (

@@ -46,7 +46,7 @@ export const LoginForm = () => {
         isAuthUser(login);
         authSucces({ login });
         console.log(login);
-        history.push("/step2");
+        history.push("/main");
       } else {
         isAuthUser(false);
         setError("auth");

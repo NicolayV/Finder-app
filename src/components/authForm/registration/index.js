@@ -46,7 +46,7 @@ export const RegistrationForm = () => {
       localStorage.setItem("users", JSON.stringify(users));
       isAuthUser(login);
       authSucces({ login });
-      history.push("/step2");
+      history.push("/main");
     }
   };
 

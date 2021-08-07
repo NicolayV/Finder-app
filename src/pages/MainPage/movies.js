@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
-import { actionCreators } from "../store/actions/allActionCreators";
+import { actionCreators } from "../../store/actions/allActionCreators";
 import { useHistory } from "react-router-dom";
-import { SingleContent } from "../components/contentCard";
-import { Header } from "../components/ui/header";
+import { SingleContent } from "../../components/contentCard";
+import { Header } from "../../components/ui/header";
 import { Container } from "@material-ui/core";
-import { useStyles } from "./searchPage/style";
-import { getFavoritesMovieLS, isAuthUser } from "../apiMovies";
+import { useStyles } from "./style";
+import { getFavoritesMovieLS, isAuthUser } from "../../apiMovies";
 import debounce from "lodash.debounce";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { MovieDrawer } from "../components/movieDrawer";
+import { MovieDrawer } from "../../components/movieDrawer";
 
 export const Movies = () => {
   const classes = useStyles();

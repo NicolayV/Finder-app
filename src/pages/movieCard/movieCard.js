@@ -28,7 +28,7 @@ export const MovieDetails = ({ match, history }) => {
           className={classes.cardButton}
           onClick={() => {
             setMovieDetailById([]);
-            history.push("/step2");
+            history.push("/main");
           }}
           variant="contained"
           color="primary"

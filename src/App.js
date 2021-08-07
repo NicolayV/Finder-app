@@ -6,10 +6,10 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
-import { MainForm } from "./pages/authPage/index";
-import { Movies } from "./pages/movies";
-import { MovieDetails } from "./pages/movieCard/movieCard";
-import { SearchPage } from "./pages/searchPage/searchPage";
+import { MainForm } from "./pages/AuthPage/index";
+import { Movies } from "./pages/MainPage/movies";
+import { MovieDetails } from "./pages/MovieCard/movieCard";
+import { SearchPage } from "./pages/SearchPage/searchPage";
 
 // 1) redux-thunk for async operations in redux
 // 2) base url for axios
@@ -39,7 +39,7 @@ export default function App() {
         <Switch>
           <Route exact path="/" component={MainForm} />
           <GuardRoute>
-            <Route path="/Step2" component={Movies} />
+            <Route path="/main" component={Movies} />
             <Route path="/film/:id" component={MovieDetails} />
             <Route path="/search" component={SearchPage} />
           </GuardRoute>
