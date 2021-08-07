@@ -4,6 +4,8 @@ import {
   getMovies,
   getDetails,
   getSearchMovie,
+  getFavoritesMovieLS,
+  setFavoritesMovieLS,
 } from "../../apiMovies";
 
 const SET_USER_LOG_IN = "USER_LOGIN_IN";
@@ -12,10 +14,13 @@ const SET_USER_LOG_OUT = "USER_LOGIN_OUT";
 const SET_TRENDING_MOVIE_LIST = "SET_TRENDING_MOVIE_LIST";
 const SET_TRENDING_MOVIE_LIST_PAGE = "SET_TRENDING_MOVIE_LIST_PAGE";
 //
+const SET_SEARCH_TEXT = "SET_SEARCH_TEXT";
 const SET_SEARCHED_MOVIE_LIST = "SET_SEARCHED_MOVIE_LIST";
 const SET_SEARCHED_MOVIE_LIST_PAGE = "SET_SEARCHED_MOVIE_LIST_PAGE";
 //
 const SET_MOVIE_DETAIL_BY_ID = "SET_MOVIE_DETAIL_BY_ID";
+//
+const SET_FAVORITES_MOVIE_BY_ID = "SET_FAVORITES_MOVIE_BY_ID";
 //
 //
 const initialState = {
@@ -30,11 +35,13 @@ const initialState = {
     total_result: 0,
   },
   searchedMovie: {
+    searchText: "",
     searchedCurrentPage: 1,
     searchedMovieList: [],
     total_result: 0,
   },
   currentMovieDetail: [],
+  favoritesMovie: [],
 };
 //
 //
@@ -60,6 +67,14 @@ const appDbReducer = (state = initialState, { type, payload }) => {
           isAuth: getIsAuthUser(),
         },
       };
+    case SET_TRENDING_MOVIE_LIST_PAGE:
+      return {
+        ...state,
+        trendingMovie: {
+          ...state.trendingMovie,
+          trendingCurrentPage: payload,
+        },
+      };
     case SET_TRENDING_MOVIE_LIST:
       return {
         ...state,
@@ -69,12 +84,20 @@ const appDbReducer = (state = initialState, { type, payload }) => {
           total_result: payload.total_results,
         },
       };
-    case SET_TRENDING_MOVIE_LIST_PAGE:
+    case SET_SEARCH_TEXT:
       return {
         ...state,
-        trendingMovie: {
-          ...state.trendingMovie,
-          trendingCurrentPage: payload,
+        searchedMovie: {
+          ...state.searchedMovie,
+          searchText: payload,
+        },
+      };
+    case SET_SEARCHED_MOVIE_LIST_PAGE:
+      return {
+        ...state,
+        searchedMovie: {
+          ...state.searchedMovie,
+          searchedCurrentPage: payload,
         },
       };
     case SET_SEARCHED_MOVIE_LIST:
@@ -86,20 +109,16 @@ const appDbReducer = (state = initialState, { type, payload }) => {
           total_result: payload.total_results,
         },
       };
-    case SET_SEARCHED_MOVIE_LIST_PAGE:
-      return {
-        ...state,
-        searchedMovie: {
-          ...state.searchedMovie,
-          searchedCurrentPage: payload,
-        },
-      };
     case SET_MOVIE_DETAIL_BY_ID:
       return {
         ...state,
         currentMovieDetail: payload,
       };
-
+    case SET_FAVORITES_MOVIE_BY_ID:
+      return {
+        ...state,
+        favoritesMovie: payload,
+      };
     default:
       return state;
   }
@@ -124,15 +143,6 @@ export const authLogOut = () => {
     });
   };
 };
-export const setTrendingMovieList = (payload) => {
-  return (dispatch) => {
-    dispatch({
-      type: SET_TRENDING_MOVIE_LIST,
-      payload,
-    });
-  };
-};
-
 export const setTrendingMovieListPage = (payload) => {
   return (dispatch) => {
     dispatch({
@@ -141,10 +151,18 @@ export const setTrendingMovieListPage = (payload) => {
     });
   };
 };
-export const setSearchedMovieList = (payload) => {
+export const setTrendingMovieList = (payload) => {
   return (dispatch) => {
     dispatch({
-      type: SET_SEARCHED_MOVIE_LIST,
+      type: SET_TRENDING_MOVIE_LIST,
+      payload,
+    });
+  };
+};
+export const setSearchText = (payload) => {
+  return (dispatch) => {
+    dispatch({
+      type: SET_SEARCH_TEXT,
       payload,
     });
   };
@@ -157,6 +175,14 @@ export const setSearchedMovieListPage = (payload) => {
     });
   };
 };
+export const setSearchedMovieList = (payload) => {
+  return (dispatch) => {
+    dispatch({
+      type: SET_SEARCHED_MOVIE_LIST,
+      payload,
+    });
+  };
+};
 export const setMovieDetailById = (payload) => {
   return (dispatch) => {
     dispatch({
@@ -165,11 +191,18 @@ export const setMovieDetailById = (payload) => {
     });
   };
 };
+export const setFavoritesMovieById = (payload) => {
+  return (dispatch) => {
+    dispatch({
+      type: SET_FAVORITES_MOVIE_BY_ID,
+      payload,
+    });
+  };
+};
 //
 //
 //
 // Side effects
-//
 export const setCurrentTrendingMovieList = () => {
   return (dispath, getState) => {
     const { trendingCurrentPage, trendingMovieList } =
@@ -192,9 +225,9 @@ export const getMovieDetailById = (id) => {
 };
 //
 //
-export const getSearchedMovieList = (searchText) => {
+export const setSearchedMovie = () => {
   return (dispath, getState) => {
-    const { searchedCurrentPage, searchedMovieList } =
+    const { searchedCurrentPage, searchedMovieList, searchText } =
       getState().appDB.searchedMovie;
 
     getSearchMovie(searchText, searchedCurrentPage).then(({ data }) => {
@@ -203,3 +236,30 @@ export const getSearchedMovieList = (searchText) => {
     });
   };
 };
+//
+//
+export const setFavoritesMovie = (id) => {
+  return (dispath, getState) => {
+    const { favoritesMovie } = getState().appDB;
+    getDetails(id).then(({ data }) => {
+      const repeatCheck = favoritesMovie.some((item) => item.id === id);
+      if (!repeatCheck) {
+        favoritesMovie.push(data);
+        setFavoritesMovieLS(favoritesMovie);
+        dispath(setFavoritesMovieById(favoritesMovie));
+      }
+    });
+  };
+};
+//
+//
+export const removeFavoriteMovie = (id) => {
+  return (dispath, getState) => {
+    const { favoritesMovie } = getState().appDB;
+    const withoutFavMovie = favoritesMovie.filter((item) => item.id !== id);
+    setFavoritesMovieLS(withoutFavMovie);
+    dispath(setFavoritesMovieById(withoutFavMovie));
+  };
+};
+//
+//

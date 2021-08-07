@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionCreators } from "../store/actions/allActionCreators";
@@ -7,9 +7,10 @@ import { SingleContent } from "../components/contentCard";
 import { Header } from "../components/ui/header";
 import { Container } from "@material-ui/core";
 import { useStyles } from "./searchPage/style";
-import { isAuthUser } from "../apiMovies";
+import { getFavoritesMovieLS, isAuthUser } from "../apiMovies";
 import debounce from "lodash.debounce";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { MovieDrawer } from "../components/movieDrawer";
 
 export const Movies = () => {
   const classes = useStyles();
@@ -23,8 +24,8 @@ export const Movies = () => {
     authLogOut,
     setTrendingMovieListPage,
     setCurrentTrendingMovieList,
-    setSearchedMovieListPage,
-    getSearchedMovieList,
+    setSearchText,
+    setFavoritesMovieById,
   } = bindActionCreators(actionCreators, dispatch);
   useEffect(
     () => {
@@ -33,6 +34,8 @@ export const Movies = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [trendingMovie.trendingCurrentPage]
   );
+  useEffect(() => setFavoritesMovieById(getFavoritesMovieLS()), []);
+  const [toggle, setToggle] = useState(false);
 
   const handlerAuthLogOut = () => {
     isAuthUser(false);
@@ -41,97 +44,59 @@ export const Movies = () => {
   };
 
   const handlerSearch = debounce((searchText) => {
-    console.log(searchText);
-    getSearchedMovieList(searchText);
+    setSearchText(searchText);
+    history.push("/search");
   }, 1000);
-  //
-  //
-  //
-  //
+
   const handlerTest = () => {
-    console.log(searchedMovie.searchedMovieList.length);
+    localStorage.removeItem("favoritesMovie");
   };
-  if (searchedMovie.searchedMovieList.length === 0) {
-    return (
-      <>
-        <Header
-          loginName={user.userLogin || user.isAuth}
-          handlerAuthLogOut={handlerAuthLogOut}
-          handlerSearch={handlerSearch}
-          handlerTest={handlerTest}
-        />
-        <Container className={classes.root}>
-          <InfiniteScroll
-            className={classes.root}
-            dataLength={trendingMovie.trendingMovieList.length}
-            next={() =>
-              setTrendingMovieListPage(trendingMovie.trendingCurrentPage + 1)
-            }
-            hasMore={true}
-          >
-            {trendingMovie.trendingMovieList &&
-              trendingMovie.trendingMovieList.map(
-                ({
-                  id,
-                  poster_path,
-                  title,
-                  name,
-                  release_date,
-                  first_air_date,
-                }) => (
-                  <SingleContent
-                    key={id}
-                    id={id}
-                    poster={poster_path}
-                    title={title || name}
-                    date={release_date || first_air_date}
-                  />
-                )
-              )}
-          </InfiniteScroll>
-        </Container>
-      </>
-    );
-  } else {
-    return (
-      <>
-        <Header
-          loginName={user.userLogin || user.isAuth}
-          handlerAuthLogOut={handlerAuthLogOut}
-          handlerSearch={handlerSearch}
-          handlerTest={handlerTest}
-        />
-        <Container className={classes.root}>
-          <InfiniteScroll
-            className={classes.root}
-            dataLength={searchedMovie.searchedMovieList.length}
-            next={() =>
-              setSearchedMovieListPage(searchedMovie.searchedCurrentPage + 1)
-            }
-            hasMore={true}
-          >
-            {searchedMovie.searchedMovieList &&
-              searchedMovie.searchedMovieList.map(
-                ({
-                  id,
-                  poster_path,
-                  title,
-                  name,
-                  release_date,
-                  first_air_date,
-                }) => (
-                  <SingleContent
-                    key={id}
-                    id={id}
-                    poster={poster_path}
-                    title={title || name}
-                    date={release_date || first_air_date}
-                  />
-                )
-              )}
-          </InfiniteScroll>
-        </Container>
-      </>
-    );
-  }
+  const handlerMenuOpen = () => {
+    setToggle(!toggle);
+    console.log("toggle: ", toggle);
+  };
+  const handlerMenuClose = () => setToggle(!toggle);
+
+  return (
+    <>
+      <Header
+        loginName={user.userLogin || user.isAuth}
+        handlerAuthLogOut={handlerAuthLogOut}
+        handlerSearch={handlerSearch}
+        handlerTest={handlerTest}
+        handlerMenuOpen={handlerMenuOpen}
+      />
+      <MovieDrawer handlerMenuClose={handlerMenuClose} isOpen={toggle} />
+      <Container className={classes.root}>
+        <InfiniteScroll
+          className={classes.root}
+          dataLength={trendingMovie.trendingMovieList.length}
+          next={() =>
+            setTrendingMovieListPage(trendingMovie.trendingCurrentPage + 1)
+          }
+          hasMore={true}
+        >
+          {trendingMovie.trendingMovieList &&
+            trendingMovie.trendingMovieList.map(
+              ({
+                id,
+                poster_path,
+                title,
+                name,
+                release_date,
+                first_air_date,
+              }) => (
+                <SingleContent
+                  key={id}
+                  id={id}
+                  poster={poster_path}
+                  title={title || name}
+                  date={release_date || first_air_date}
+                />
+              )
+            )}
+        </InfiniteScroll>
+      </Container>
+    </>
+  );
 };

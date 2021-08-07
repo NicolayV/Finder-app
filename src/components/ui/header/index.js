@@ -1,5 +1,7 @@
 import React from "react";
 import { useStyles } from "./style";
+import MenuIcon from "@material-ui/icons/Menu";
+
 import {
   AppBar,
   Toolbar,
@@ -7,6 +9,7 @@ import {
   InputBase,
   Button,
   Slide,
+  IconButton,
 } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 // import CssBaseline from "@material-ui/core/CssBaseline";
@@ -27,7 +30,13 @@ function HideOnScroll(props) {
 }
 
 export const Header = (props) => {
-  const { loginName, handlerAuthLogOut, handlerSearch, handlerTest } = props;
+  const {
+    loginName,
+    handlerAuthLogOut,
+    handlerSearch,
+    handlerTest,
+    handlerMenuOpen,
+  } = props;
   const classes = useStyles();
 
   return (
@@ -36,6 +45,15 @@ export const Header = (props) => {
       <HideOnScroll {...props}>
         <AppBar position="fixed">
           <Toolbar>
+            <IconButton
+              edge="start"
+              className={classes.menuButton}
+              color="inherit"
+              aria-label="menu"
+              onClick={handlerMenuOpen}
+            >
+              <MenuIcon />
+            </IconButton>
             <Typography variant="h6" className={classes.title}>
               Login: {loginName}
             </Typography>

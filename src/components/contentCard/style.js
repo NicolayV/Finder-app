@@ -1,4 +1,5 @@
 import { makeStyles } from "@material-ui/core/styles";
+import { blue } from "@material-ui/core/colors";
 
 export const useStyles = makeStyles((theme) => ({
   root: {
@@ -16,5 +17,14 @@ export const useStyles = makeStyles((theme) => ({
 
   cardButton: {
     margin: theme.spacing(1),
+  },
+  avatar: {
+    backgroundColor: blue[500],
+  },
+  сardHeader: {
+    height: 50,
+  },
+  сardFab: {
+    backgroundColor: blue[500],
   },
 }));
