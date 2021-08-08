@@ -3,23 +3,19 @@ import React, { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useStyles } from "./style";
-import { bindActionCreators } from "redux";
-import { actionCreators } from "../../store/actions/allActionCreators";
-const poster = "https://image.tmdb.org/t/p/w185_and_h278_bestv2/";
-const noImage =
-  "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRVTzTTaf9FVUAkBIP4FeE2P3odm6bLLx1m_Cy7SSrrMuRFNUyj&usqp=CAU";
+import { getMovieDetailById, setMovieDetailById } from "../../ducks/movie";
+
+import { poster, noImage } from "../../config/config";
 
 export const MovieDetails = ({ match, history }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { getMovieDetailById, setMovieDetailById } = bindActionCreators(
-    actionCreators,
-    dispatch
-  );
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => getMovieDetailById(match.params.id), [match.params.id]);
-  const { currentMovieDetail } = useSelector((state) => state.appDB);
+  useEffect(
+    () => dispatch(getMovieDetailById(match.params.id)),
+    [dispatch, match.params.id]
+  );
+  const { currentMovieDetail } = useSelector((state) => state.movie);
 
   return (
     <Card className={classes.wrapper}>
@@ -27,7 +23,7 @@ export const MovieDetails = ({ match, history }) => {
         <Button
           className={classes.cardButton}
           onClick={() => {
-            setMovieDetailById([]);
+            dispatch(setMovieDetailById([]));
             history.push("/main");
           }}
           variant="contained"

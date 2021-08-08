@@ -35,7 +35,7 @@ const initialState = {
 //
 //
 // Reducer
-const appDbReducer = (state = initialState, { type, payload }) => {
+const movie = (state = initialState, { type, payload }) => {
   switch (type) {
     case SET_TRENDING_MOVIE_LIST_PAGE:
       return {
@@ -93,7 +93,7 @@ const appDbReducer = (state = initialState, { type, payload }) => {
       return state;
   }
 };
-export default appDbReducer;
+export default movie;
 //
 //
 // Action Creator
@@ -159,7 +159,7 @@ export const setFavoritesMovieById = (payload) => {
 export const setCurrentTrendingMovieList = () => {
   return (dispath, getState) => {
     const { trendingCurrentPage, trendingMovieList } =
-      getState().appDB.trendingMovie;
+      getState().movie.trendingMovie;
 
     getMovies(trendingCurrentPage).then(({ data }) => {
       data.results = trendingMovieList.concat(data.results);
@@ -181,7 +181,7 @@ export const getMovieDetailById = (id) => {
 export const setSearchedMovie = () => {
   return (dispath, getState) => {
     const { searchedCurrentPage, searchedMovieList, searchText } =
-      getState().appDB.searchedMovie;
+      getState().movie.searchedMovie;
 
     getSearchMovie(searchText, searchedCurrentPage).then(({ data }) => {
       data.results = searchedMovieList.concat(data.results);
@@ -193,7 +193,7 @@ export const setSearchedMovie = () => {
 //
 export const setFavoritesMovie = (id) => {
   return (dispath, getState) => {
-    const { favoritesMovie } = getState().appDB;
+    const { favoritesMovie } = getState().movie;
     getDetails(id).then(({ data }) => {
       const repeatCheck = favoritesMovie.some((item) => item.id === id);
       if (!repeatCheck) {
@@ -212,7 +212,7 @@ export const setFavoritesMovie = (id) => {
 //
 export const removeFavoriteMovie = (id) => {
   return (dispath, getState) => {
-    const { favoritesMovie } = getState().appDB;
+    const { favoritesMovie } = getState().movie;
     const withoutFavMovie = favoritesMovie.filter((item) => item.id !== id);
     setFavoritesMovieLS(withoutFavMovie);
     dispath(setFavoritesMovieById(withoutFavMovie));

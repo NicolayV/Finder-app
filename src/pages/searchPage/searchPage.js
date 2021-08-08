@@ -1,54 +1,45 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { bindActionCreators } from "redux";
-import { actionCreators } from "../../store/actions/allActionCreators";
 import { useHistory } from "react-router-dom";
 import { SingleContent } from "../../components/contentCard/index";
 import { Header } from "../../components/ui/header";
 import { Container } from "@material-ui/core";
 import { useStyles } from "./style";
-import { getFavoritesMovieLS, isAuthUser } from "../../apiMovies";
+import { isAuthUser } from "../../apiMovies";
 import debounce from "lodash.debounce";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { MovieDrawer } from "../../components/movieDrawer";
+import {
+  setSearchText,
+  setSearchedMovieListPage,
+  setSearchedMovie,
+} from "../../ducks/movie";
+import { authLogOut } from "../../ducks/auth";
 
 export const SearchPage = () => {
+  const dispatch = useDispatch();
   const classes = useStyles();
   let history = useHistory();
 
-  const { searchText, searchedCurrentPage, searchedMovieList } = useSelector(
-    (state) => state.appDB.searchedMovie
+  const { searchedCurrentPage, searchedMovieList } = useSelector(
+    (state) => state.movie.searchedMovie
   );
-  const { user } = useSelector((state) => state.appDB);
+  const { user } = useSelector((state) => state.auth);
 
-  const dispatch = useDispatch();
-  const {
-    authLogOut,
-    setSearchText,
-    setSearchedMovieListPage,
-    setSearchedMovie,
-    setFavoritesMovieById,
-  } = bindActionCreators(actionCreators, dispatch);
-
-  // useEffect(() => {
-  //   setSearchedMovie();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [searchText]);
   useEffect(() => {
-    setSearchedMovie();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchedCurrentPage]);
-  console.log(searchedCurrentPage);
+    dispatch(setSearchedMovie());
+  }, [dispatch, searchedCurrentPage]);
+
   const [toggle, setToggle] = useState(false);
 
   const handlerAuthLogOut = () => {
     isAuthUser(false);
-    authLogOut();
+    dispatch(authLogOut());
     return setTimeout(() => history.push("/"), 500);
   };
 
   const handlerSearch = debounce((searchText) => {
-    setSearchText(searchText);
+    dispatch(setSearchText(searchText));
   }, 1000);
 
   const handlerTest = () => {
@@ -74,7 +65,9 @@ export const SearchPage = () => {
         <InfiniteScroll
           className={classes.root}
           dataLength={searchedMovieList.length}
-          next={() => setSearchedMovieListPage(searchedCurrentPage + 1)}
+          next={() =>
+            dispatch(setSearchedMovieListPage(searchedCurrentPage + 1))
+          }
           hasMore={true}
         >
           {searchedMovieList &&

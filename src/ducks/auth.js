@@ -14,7 +14,7 @@ const initialState = {
 //
 //
 //  Reducer
-const appDbReducer = (state = initialState, { type, payload }) => {
+const auth = (state = initialState, { type, payload }) => {
   switch (type) {
     case SET_USER_LOG_IN:
       return {
@@ -38,7 +38,7 @@ const appDbReducer = (state = initialState, { type, payload }) => {
       return state;
   }
 };
-export default appDbReducer;
+export default auth;
 
 // export default () => {};
 

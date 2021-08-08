@@ -11,8 +11,7 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 import { useDispatch, useSelector } from "react-redux";
-import { bindActionCreators } from "redux";
-import { actionCreators } from "../../store/actions/allActionCreators";
+import { setFavoritesMovie } from "../../ducks/movie";
 
 import { useHistory } from "react-router-dom";
 
@@ -20,8 +19,7 @@ export const SingleContent = ({ poster, title, date, id }) => {
   const classes = useStyles();
   let history = useHistory();
   const dispatch = useDispatch();
-  const { setFavoritesMovie } = bindActionCreators(actionCreators, dispatch);
-  const { favoritesMovie } = useSelector((state) => state.appDB);
+  const { favoritesMovie } = useSelector((state) => state.movie);
   const isLiked = favoritesMovie.find((item) => item.id === id);
 
   return (
@@ -37,7 +35,7 @@ export const SingleContent = ({ poster, title, date, id }) => {
           <IconButton
             style={isLiked ? { color: "red" } : null}
             aria-label="add to favorites"
-            onClick={() => setFavoritesMovie(id)}
+            onClick={() => dispatch(setFavoritesMovie(id))}
           >
             <FavoriteIcon />
           </IconButton>

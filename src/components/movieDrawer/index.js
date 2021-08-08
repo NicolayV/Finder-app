@@ -12,13 +12,11 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import BookmarksIcon from "@material-ui/icons/Bookmarks";
-import { bindActionCreators } from "redux";
-import { actionCreators } from "../../store/actions/allActionCreators";
+import { setFavoritesMovie } from "../../ducks/movie";
 
 export const MovieDrawer = (props, { match, history }) => {
   const dispatch = useDispatch();
-  const { setFavoritesMovie } = bindActionCreators(actionCreators, dispatch);
-  const { favoritesMovie } = useSelector((state) => state.appDB);
+  const { favoritesMovie } = useSelector((state) => state.movie);
 
   return (
     <Drawer open={props.isOpen} onClose={props.handlerMenuClose}>
@@ -34,7 +32,7 @@ export const MovieDrawer = (props, { match, history }) => {
               <ListItemText primary={item.title} />
               <IconButton
                 aria-label="add to favorites"
-                onClick={() => setFavoritesMovie(item.id)}
+                onClick={() => dispatch(setFavoritesMovie(item.id))}
               >
                 <FavoriteIcon color="secondary" />
               </IconButton>

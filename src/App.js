@@ -17,7 +17,7 @@ import { SearchPage } from "./pages/SearchPage/searchPage";
 // 4) search movies div below input
 
 const GuardRoute = ({ children }) => {
-  const isAuth = useSelector((state) => state.appDB.user.isAuth);
+  const isAuth = useSelector((state) => state.auth.user.isAuth);
   return isAuth ? children : <Redirect to="/" />;
 };
 

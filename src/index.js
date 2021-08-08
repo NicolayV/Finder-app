@@ -5,7 +5,7 @@ import App from "./App";
 import "fontsource-roboto";
 import { createStore, compose, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
-import rootReducer from "./store/rootReducer";
+import rootReducer from "./reducers/rootReducer";
 import thunk from "redux-thunk";
 
 const composeEnhancers =

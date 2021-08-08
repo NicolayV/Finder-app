@@ -5,8 +5,7 @@ import { UiButton } from "../../ui/buttons";
 import { Form } from "../../ui/form";
 
 import { useDispatch } from "react-redux";
-import { bindActionCreators } from "redux";
-import { actionCreators } from "../../../store/actions/allActionCreators";
+import { authSucces } from "../../../ducks/auth";
 
 import { useHistory } from "react-router-dom";
 
@@ -17,7 +16,6 @@ export const LoginForm = () => {
   let history = useHistory();
 
   const dispatch = useDispatch();
-  const { authSucces } = bindActionCreators(actionCreators, dispatch);
 
   const {
     register,
@@ -44,7 +42,7 @@ export const LoginForm = () => {
 
       if (currentUser) {
         isAuthUser(login);
-        authSucces({ login });
+        dispatch(authSucces({ login }));
         console.log(login);
         history.push("/main");
       } else {
