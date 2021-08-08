@@ -10,7 +10,6 @@ import {
 } from "@material-ui/core";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import BookmarksIcon from "@material-ui/icons/Bookmarks";
 import { bindActionCreators } from "redux";
@@ -24,6 +23,7 @@ export const MovieDrawer = (props, { match, history }) => {
   return (
     <Drawer open={props.isOpen} onClose={props.handlerMenuClose}>
       <ListSubheader>Favorite films</ListSubheader>
+      <Divider />
       <List>
         {favoritesMovie.length > 0 &&
           favoritesMovie.map((item) => (
@@ -41,10 +41,9 @@ export const MovieDrawer = (props, { match, history }) => {
             </ListItem>
           ))}
       </List>
-      <Divider />
-      <ListItem button key={"Go to favorite page"}>
+      {/* <ListItem button key={"Go to favorite page"}>
         <ListItemText primary={"Go to favorite page"} />
-      </ListItem>
+      </ListItem> */}
     </Drawer>
   );
 };

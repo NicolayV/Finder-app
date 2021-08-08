@@ -8,7 +8,6 @@ import CardMedia from "@material-ui/core/CardMedia";
 import { Avatar, Button, CardActions, IconButton } from "@material-ui/core";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import FavoriteIcon from "@material-ui/icons/Favorite";
-import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -21,10 +20,7 @@ export const SingleContent = ({ poster, title, date, id }) => {
   const classes = useStyles();
   let history = useHistory();
   const dispatch = useDispatch();
-  const { setFavoritesMovie, removeFavoriteMovie } = bindActionCreators(
-    actionCreators,
-    dispatch
-  );
+  const { setFavoritesMovie } = bindActionCreators(actionCreators, dispatch);
   const { favoritesMovie } = useSelector((state) => state.appDB);
   const isLiked = favoritesMovie.find((item) => item.id === id);
 
@@ -68,12 +64,6 @@ export const SingleContent = ({ poster, title, date, id }) => {
         >
           Learn more
         </Button>
-        <IconButton
-          aria-label="remove from favorites"
-          onClick={() => removeFavoriteMovie(id)}
-        >
-          <DeleteForeverIcon />
-        </IconButton>
       </CardActions>
     </Card>
   );

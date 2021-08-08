@@ -25,6 +25,7 @@ export const Movies = () => {
     setSearchText,
     setFavoritesMovieById,
   } = bindActionCreators(actionCreators, dispatch);
+
   useEffect(
     () => {
       setCurrentTrendingMovieList();
@@ -47,9 +48,6 @@ export const Movies = () => {
     history.push("/search");
   }, 1000);
 
-  const handlerTest = () => {
-    localStorage.removeItem("favoritesMovie");
-  };
   const handlerMenuOpen = () => {
     setToggle(!toggle);
   };
@@ -61,7 +59,6 @@ export const Movies = () => {
         loginName={user.userLogin || user.isAuth}
         handlerAuthLogOut={handlerAuthLogOut}
         handlerSearch={handlerSearch}
-        handlerTest={handlerTest}
         handlerMenuOpen={handlerMenuOpen}
       />
       <MovieDrawer handlerMenuClose={handlerMenuClose} isOpen={toggle} />
