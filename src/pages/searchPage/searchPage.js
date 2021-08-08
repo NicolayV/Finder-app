@@ -1,66 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
 import { SingleContent } from "../../components/contentCard/index";
 import { Header } from "../../components/ui/header";
 import { Container } from "@material-ui/core";
 import { useStyles } from "./style";
-import { isAuthUser } from "../../apiMovies";
-import debounce from "lodash.debounce";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { MovieDrawer } from "../../components/movieDrawer";
-import {
-  setSearchText,
-  setSearchedMovieListPage,
-  setSearchedMovie,
-} from "../../ducks/movie";
-import { authLogOut } from "../../ducks/auth";
+import { setSearchedMovieListPage, setSearchedMovie } from "../../ducks/movie";
 
 export const SearchPage = () => {
   const dispatch = useDispatch();
   const classes = useStyles();
-  let history = useHistory();
 
   const { searchedCurrentPage, searchedMovieList } = useSelector(
     (state) => state.movie.searchedMovie
   );
-  const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
     dispatch(setSearchedMovie());
   }, [dispatch, searchedCurrentPage]);
 
-  const [toggle, setToggle] = useState(false);
-
-  const handlerAuthLogOut = () => {
-    isAuthUser(false);
-    dispatch(authLogOut());
-    return setTimeout(() => history.push("/"), 500);
-  };
-
-  const handlerSearch = debounce((searchText) => {
-    dispatch(setSearchText(searchText));
-  }, 1000);
-
-  const handlerTest = () => {
-    localStorage.removeItem("favoritesMovie");
-  };
-  const handlerMenuOpen = () => {
-    setToggle(!toggle);
-  };
-  const handlerMenuClose = () => setToggle(!toggle);
-
   return (
     <>
-      <Header
-        loginName={user.userLogin || user.isAuth}
-        handlerAuthLogOut={handlerAuthLogOut}
-        handlerSearch={handlerSearch}
-        handlerTest={handlerTest}
-        handlerMenuOpen={handlerMenuOpen}
-      />
-      <MovieDrawer handlerMenuClose={handlerMenuClose} isOpen={toggle} />
-
+      <Header />
       <Container className={classes.root}>
         <InfiniteScroll
           className={classes.root}
