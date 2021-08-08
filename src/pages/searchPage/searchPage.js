@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { SingleContent } from "../../components/contentCard/index";
 import { Header } from "../../components/ui/header";
 import { Container } from "@material-ui/core";
+import { UnendingScrollS } from "../../components/ui/unendingScroll";
 import { useStyles } from "./style";
-import InfiniteScroll from "react-infinite-scroll-component";
-import { setSearchedMovieListPage, setSearchedMovie } from "../../ducks/movie";
+import { setSearchedMovie } from "../../ducks/movie";
 
 export const SearchPage = () => {
   const dispatch = useDispatch();
@@ -19,18 +19,17 @@ export const SearchPage = () => {
     dispatch(setSearchedMovie());
   }, [dispatch, searchedCurrentPage]);
 
+  // useEffect(() => {
+  //   const currentSearchText = getSearchTextLS();
+
+  //   dispatch(setFavoritesMovieById(storageMovies));
+  // }, [dispatch]);
+
   return (
     <>
       <Header />
       <Container className={classes.root}>
-        <InfiniteScroll
-          className={classes.root}
-          dataLength={searchedMovieList.length}
-          next={() =>
-            dispatch(setSearchedMovieListPage(searchedCurrentPage + 1))
-          }
-          hasMore={true}
-        >
+        <UnendingScrollS>
           {searchedMovieList &&
             searchedMovieList.map(
               ({
@@ -50,7 +49,7 @@ export const SearchPage = () => {
                 />
               )
             )}
-        </InfiniteScroll>
+        </UnendingScrollS>
       </Container>
     </>
   );

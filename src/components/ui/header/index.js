@@ -21,9 +21,15 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import BookmarksIcon from "@material-ui/icons/Bookmarks";
-import { setFavoritesMovie, setSearchText } from "../../../ducks/movie";
+import {
+  setTrendingMovieListPage,
+  setTrendingMovieList,
+  setSearchedMovie,
+  setFavoritesMovie,
+  setSearchText,
+} from "../../../ducks/movie";
 import { authLogOut } from "../../../ducks/auth";
-import { isAuthUser } from "../../../apiMovies";
+import { isAuthUser, setSearchTextLS } from "../../../apiMovies";
 import { useHistory } from "react-router-dom";
 import debounce from "lodash.debounce";
 
@@ -51,9 +57,10 @@ export const Header = (props) => {
   const [toggle, setToggle] = useState(false);
 
   const handlerSearch = debounce((searchText) => {
-    dispatch(setSearchText(searchText));
+    setSearchTextLS(searchText);
+    dispatch(setSearchedMovie());
     history.push("/search");
-  }, 500);
+  }, 1000);
 
   return (
     <>

@@ -3,6 +3,7 @@ import {
   getDetails,
   getSearchMovie,
   setFavoritesMovieLS,
+  getSearchTextLS,
 } from "../apiMovies";
 
 const SET_TRENDING_MOVIE_LIST = "SET_TRENDING_MOVIE_LIST";
@@ -113,6 +114,7 @@ export const setTrendingMovieList = (payload) => {
     });
   };
 };
+
 export const setSearchText = (payload) => {
   return (dispatch) => {
     dispatch({
@@ -137,6 +139,7 @@ export const setSearchedMovieList = (payload) => {
     });
   };
 };
+
 export const setMovieDetailById = (payload) => {
   return (dispatch) => {
     dispatch({
@@ -145,6 +148,7 @@ export const setMovieDetailById = (payload) => {
     });
   };
 };
+
 export const setFavoritesMovieById = (payload) => {
   return (dispatch) => {
     dispatch({
@@ -169,23 +173,36 @@ export const setCurrentTrendingMovieList = () => {
 };
 //
 //
-export const getMovieDetailById = (id) => {
-  return (dispath) => {
-    getDetails(id).then(({ data }) => {
-      dispath(setMovieDetailById(data));
-    });
+export const setSearchedMovie = () => {
+  return (dispath, getState) => {
+    const currentSearchText = getSearchTextLS();
+    console.log("currentSearchText ", currentSearchText);
+    const prevSearchText = getState().movie.searchedMovie.searchText;
+    console.log("prevSearchText ", prevSearchText);
+    dispath(setSearchText(currentSearchText));
+    const { searchedCurrentPage, searchedMovieList, searchText } =
+      getState().movie.searchedMovie;
+
+    if (currentSearchText === prevSearchText) {
+      getSearchMovie(searchText, searchedCurrentPage).then(({ data }) => {
+        data.results = searchedMovieList.concat(data.results);
+        dispath(setSearchedMovieList(data));
+      });
+    } else {
+      getSearchMovie(searchText, searchedCurrentPage).then(({ data }) => {
+        dispath(setSearchedMovieList(data));
+      });
+    }
   };
 };
 //
 //
-export const setSearchedMovie = () => {
-  return (dispath, getState) => {
-    const { searchedCurrentPage, searchedMovieList, searchText } =
-      getState().movie.searchedMovie;
-
-    getSearchMovie(searchText, searchedCurrentPage).then(({ data }) => {
-      data.results = searchedMovieList.concat(data.results);
-      dispath(setSearchedMovieList(data));
+//
+//
+export const getMovieDetailById = (id) => {
+  return (dispath) => {
+    getDetails(id).then(({ data }) => {
+      dispath(setMovieDetailById(data));
     });
   };
 };
@@ -210,13 +227,5 @@ export const setFavoritesMovie = (id) => {
 };
 //
 //
-export const removeFavoriteMovie = (id) => {
-  return (dispath, getState) => {
-    const { favoritesMovie } = getState().movie;
-    const withoutFavMovie = favoritesMovie.filter((item) => item.id !== id);
-    setFavoritesMovieLS(withoutFavMovie);
-    dispath(setFavoritesMovieById(withoutFavMovie));
-  };
-};
 //
 //

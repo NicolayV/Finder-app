@@ -3,47 +3,38 @@ import { useDispatch, useSelector } from "react-redux";
 import { SingleContent } from "../../components/contentCard";
 import { Header } from "../../components/ui/header";
 import { Container } from "@material-ui/core";
+import { UnendingScrollM } from "../../components/ui/unendingScroll";
 import { useStyles } from "./style";
 import { getFavoritesMovieLS } from "../../apiMovies";
-import InfiniteScroll from "react-infinite-scroll-component";
 import {
   setFavoritesMovieById,
   setCurrentTrendingMovieList,
-  setTrendingMovieListPage,
 } from "../../ducks/movie";
 
 export const Movies = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const { trendingMovie } = useSelector((state) => state.movie);
+  const { trendingCurrentPage, trendingMovieList } = useSelector(
+    (state) => state.movie.trendingMovie
+  );
 
   useEffect(() => {
     dispatch(setCurrentTrendingMovieList());
-  }, [dispatch, trendingMovie.trendingCurrentPage]);
+  }, [dispatch, trendingCurrentPage]);
+
   useEffect(() => {
     const storageMovies = getFavoritesMovieLS();
     dispatch(setFavoritesMovieById(storageMovies));
   }, [dispatch]);
 
-  console.log("render");
   return (
     <>
       <Header />
-      {/* <MovieDrawer handlerMenuClose={handlerMenuClose} isOpen={toggle} /> */}
       <Container className={classes.root}>
-        <InfiniteScroll
-          className={classes.root}
-          dataLength={trendingMovie.trendingMovieList.length}
-          next={() =>
-            dispatch(
-              setTrendingMovieListPage(trendingMovie.trendingCurrentPage + 1)
-            )
-          }
-          hasMore={true}
-        >
-          {trendingMovie.trendingMovieList &&
-            trendingMovie.trendingMovieList.map(
+        <UnendingScrollM>
+          {trendingMovieList &&
+            trendingMovieList.map(
               ({
                 id,
                 poster_path,
@@ -61,7 +52,7 @@ export const Movies = () => {
                 />
               )
             )}
-        </InfiniteScroll>
+        </UnendingScrollM>
       </Container>
     </>
   );
