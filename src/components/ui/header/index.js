@@ -21,13 +21,8 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import BookmarksIcon from "@material-ui/icons/Bookmarks";
-import {
-  setTrendingMovieListPage,
-  setTrendingMovieList,
-  setSearchedMovie,
-  setFavoritesMovie,
-  setSearchText,
-} from "../../../ducks/movie";
+import MenuBookIcon from "@material-ui/icons/MenuBook";
+import { setSearchedMovie, setFavoritesMovie } from "../../../ducks/movie";
 import { authLogOut } from "../../../ducks/auth";
 import { isAuthUser, setSearchTextLS } from "../../../utils/storage";
 import { useHistory } from "react-router-dom";
@@ -123,7 +118,10 @@ export const Header = (props) => {
                 <ListItemIcon>
                   <BookmarksIcon color="primary" />
                 </ListItemIcon>
-                <ListItemText primary={item.title} />
+                <ListItemText
+                  primary={item.title}
+                  onClick={() => history.push("/film/" + item.id)}
+                />
                 <IconButton
                   aria-label="add to favorites"
                   onClick={() => dispatch(setFavoritesMovie(item.id))}
@@ -132,10 +130,19 @@ export const Header = (props) => {
                 </IconButton>
               </ListItem>
             ))}
+          <Divider />
+
+          <ListItem
+            onClick={() => history.push("/favorite")}
+            button
+            key={"ifavorite"}
+          >
+            <ListItemIcon>
+              <MenuBookIcon color="secondary" />
+            </ListItemIcon>
+            <ListItemText primary={"Go to favorite page..."} />
+          </ListItem>
         </List>
-        {/* <ListItem button key={"Go to favorite page"}>
-        <ListItemText primary={"Go to favorite page"} />
-      </ListItem> */}
       </Drawer>
     </>
   );

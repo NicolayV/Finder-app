@@ -7,6 +7,7 @@ import {
   Redirect,
 } from "react-router-dom";
 import { MainForm } from "./pages/AuthPage/index";
+import { Favorite } from "./pages/FavoritePage/favorite";
 import { Movies } from "./pages/MainPage/movies";
 import { MovieDetails } from "./pages/MovieCard/movieCard";
 import { SearchPage } from "./pages/SearchPage/searchPage";
@@ -42,6 +43,7 @@ export default function App() {
             <Route path="/main" component={Movies} />
             <Route path="/film/:id" component={MovieDetails} />
             <Route path="/search" component={SearchPage} />
+            <Route path="/favorite" component={Favorite} />
           </GuardRoute>
         </Switch>
       </Router>
