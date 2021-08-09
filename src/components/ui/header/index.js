@@ -29,7 +29,7 @@ import {
   setSearchText,
 } from "../../../ducks/movie";
 import { authLogOut } from "../../../ducks/auth";
-import { isAuthUser, setSearchTextLS } from "../../../apiMovies";
+import { isAuthUser, setSearchTextLS } from "../../../utils/storage";
 import { useHistory } from "react-router-dom";
 import debounce from "lodash.debounce";
 

@@ -1,10 +1,5 @@
-import {
-  getMovies,
-  getDetails,
-  getSearchMovie,
-  setFavoritesMovieLS,
-  getSearchTextLS,
-} from "../apiMovies";
+import { getMovies, getDetails, getSearchMovie } from "../apiMovies";
+import { getSearchTextLS, setFavoritesMovieLS } from "../utils/storage";
 
 const SET_TRENDING_MOVIE_LIST = "SET_TRENDING_MOVIE_LIST";
 const SET_TRENDING_MOVIE_LIST_PAGE = "SET_TRENDING_MOVIE_LIST_PAGE";

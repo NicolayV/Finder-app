@@ -5,7 +5,7 @@ import { Header } from "../../components/ui/header";
 import { Container } from "@material-ui/core";
 import { UnendingScrollM } from "../../components/ui/unendingScroll";
 import { useStyles } from "./style";
-import { getFavoritesMovieLS } from "../../apiMovies";
+import { getFavoritesMovieLS } from "../../utils/storage";
 import {
   setFavoritesMovieById,
   setCurrentTrendingMovieList,

@@ -1,4 +1,4 @@
-import { getIsAuthUser } from "../apiMovies";
+import { getIsAuthUser } from "../utils/storage";
 
 const SET_USER_LOG_IN = "USER_LOGIN_IN";
 const SET_USER_LOG_OUT = "USER_LOGIN_OUT";

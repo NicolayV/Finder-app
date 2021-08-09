@@ -7,7 +7,7 @@ import { Form } from "../../ui/form";
 import { useDispatch } from "react-redux";
 import { authLogOut, authSucces } from "../../../ducks/auth";
 
-import { getUsers, isAuthUser } from "../../../apiMovies";
+import { getUsers, isAuthUser } from "../../../utils/storage";
 import { useHistory } from "react-router-dom";
 
 export const RegistrationForm = () => {

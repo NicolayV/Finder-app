@@ -10,7 +10,7 @@ import { authSucces } from "../../../ducks/auth";
 import { useHistory } from "react-router-dom";
 
 import { delay } from "../../../utils/helpers";
-import { getUsers, isAuthUser } from "../../../apiMovies";
+import { getUsers, isAuthUser } from "../../../utils/storage";
 
 export const LoginForm = () => {
   let history = useHistory();

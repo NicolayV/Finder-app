@@ -19,12 +19,6 @@ export const SearchPage = () => {
     dispatch(setSearchedMovie());
   }, [dispatch, searchedCurrentPage]);
 
-  // useEffect(() => {
-  //   const currentSearchText = getSearchTextLS();
-
-  //   dispatch(setFavoritesMovieById(storageMovies));
-  // }, [dispatch]);
-
   return (
     <>
       <Header />
