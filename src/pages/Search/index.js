@@ -7,7 +7,7 @@ import { UnendingScrollS } from "../../components/ui/unendingScroll";
 import { useStyles } from "./style";
 import { setSearchedMovie } from "../../ducks/movie";
 
-export const SearchPage = () => {
+export const Search = () => {
   const dispatch = useDispatch();
   const classes = useStyles();
 

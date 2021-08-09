@@ -27,7 +27,7 @@ export const UnendingScrollM = ({ children }) => {
   );
 };
 
-// InfiniteScroll for SearchPage
+// InfiniteScroll for Search
 export const UnendingScrollS = ({ children }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
