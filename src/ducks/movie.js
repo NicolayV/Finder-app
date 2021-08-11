@@ -171,9 +171,9 @@ export const setCurrentTrendingMovieList = () => {
 export const setSearchedMovie = () => {
   return (dispath, getState) => {
     const currentSearchText = getSearchTextLS();
-    console.log("currentSearchText ", currentSearchText);
+    // console.log("currentSearchText ", currentSearchText);
     const prevSearchText = getState().movie.searchedMovie.searchText;
-    console.log("prevSearchText ", prevSearchText);
+    // console.log("prevSearchText ", prevSearchText);
     dispath(setSearchText(currentSearchText));
     const { searchedCurrentPage, searchedMovieList, searchText } =
       getState().movie.searchedMovie;
@@ -190,8 +190,6 @@ export const setSearchedMovie = () => {
     }
   };
 };
-//
-//
 //
 //
 export const getMovieDetailById = (id) => {

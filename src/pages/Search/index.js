@@ -16,6 +16,7 @@ export const Search = () => {
   );
 
   useEffect(() => {
+    console.log("render Search");
     dispatch(setSearchedMovie());
   }, [dispatch, searchedCurrentPage]);
 

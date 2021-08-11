@@ -6,11 +6,11 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
-import { MainForm } from "./pages/Auth/index";
-import { Favorite } from "./pages/Favorite/index";
-import { Movies } from "./pages/Main/index";
-import { MovieDetails } from "./pages/MovieCard/index";
-import { Search } from "./pages/Search/index";
+import { MainForm } from "./pages/Auth";
+import { Favorite } from "./pages/Favorite";
+import { Movies } from "./pages/Main";
+import { MovieDetails } from "./pages/MovieCard";
+import { Search } from "./pages/Search";
 
 // 1) redux-thunk for async operations in redux
 // 2) base url for axios
@@ -23,17 +23,6 @@ const GuardRoute = ({ children }) => {
 };
 
 export default function App() {
-  // const isAuth = useSelector((state) => state.auth.auth);
-
-  // if (!isAuth) {
-  //   return (
-  //     <Router>
-  //       <Route exact path="/" component={MainForm} />
-  //       <Redirect to="/" />
-  //     </Router>
-  //   );
-  // }
-
   return (
     <>
       <Router>

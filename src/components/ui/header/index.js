@@ -1,5 +1,11 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import debounce from "lodash.debounce";
 import { useStyles } from "./style";
+import { setSearchedMovie, setFavoritesMovie } from "../../../ducks/movie";
+import { authLogOut } from "../../../ducks/auth";
+import { isAuthUser, setSearchTextLS } from "../../../utils/storage";
 import SubscriptionsIcon from "@material-ui/icons/Subscriptions";
 import {
   AppBar,
@@ -13,8 +19,6 @@ import {
 import SearchIcon from "@material-ui/icons/Search";
 // import CssBaseline from "@material-ui/core/CssBaseline";
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
-
-import { useDispatch, useSelector } from "react-redux";
 import Drawer from "@material-ui/core/Drawer";
 import { Divider, List, ListItem, ListSubheader } from "@material-ui/core";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -22,11 +26,6 @@ import ListItemText from "@material-ui/core/ListItemText";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import BookmarksIcon from "@material-ui/icons/Bookmarks";
 import MenuBookIcon from "@material-ui/icons/MenuBook";
-import { setSearchedMovie, setFavoritesMovie } from "../../../ducks/movie";
-import { authLogOut } from "../../../ducks/auth";
-import { isAuthUser, setSearchTextLS } from "../../../utils/storage";
-import { useHistory } from "react-router-dom";
-import debounce from "lodash.debounce";
 
 function HideOnScroll(props) {
   const { children, window } = props;
@@ -44,10 +43,10 @@ function HideOnScroll(props) {
 
 export const Header = (props) => {
   const classes = useStyles();
-  let history = useHistory();
-  const { user } = useSelector((state) => state.auth);
-
   const dispatch = useDispatch();
+  let history = useHistory();
+
+  const { user } = useSelector((state) => state.auth);
   const { favoritesMovie } = useSelector((state) => state.movie);
   const [toggle, setToggle] = useState(false);
 

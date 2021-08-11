@@ -6,11 +6,13 @@ import { useStyles } from "./style";
 import { getMovieDetailById, setMovieDetailById } from "../../ducks/movie";
 
 import { poster, noImage } from "../../config/config";
+import { useHistory, useRouteMatch } from "react-router-dom";
 
-export const MovieDetails = ({ match, history }) => {
+export const MovieDetails = () => {
+  let history = useHistory();
+  let match = useRouteMatch();
   const classes = useStyles();
   const dispatch = useDispatch();
-
   useEffect(
     () => dispatch(getMovieDetailById(match.params.id)),
     [dispatch, match.params.id]
