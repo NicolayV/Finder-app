@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import debounce from "lodash.debounce";
 import { useStyles } from "./style";
-import { setSearchedMovie, setFavoritesMovie } from "../../../ducks/movie";
+import {
+  setFavoritesMovie,
+  setSearchInit,
+  setSearchedMovie,
+} from "../../../ducks/movie";
 import { authLogOut } from "../../../ducks/auth";
-import { isAuthUser, setSearchTextLS } from "../../../utils/storage";
+import { isAuthUser } from "../../../utils/storage";
 import SubscriptionsIcon from "@material-ui/icons/Subscriptions";
 import {
   AppBar,
@@ -17,7 +21,6 @@ import {
   IconButton,
 } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
-// import CssBaseline from "@material-ui/core/CssBaseline";
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import Drawer from "@material-ui/core/Drawer";
 import { Divider, List, ListItem, ListSubheader } from "@material-ui/core";
@@ -26,12 +29,11 @@ import ListItemText from "@material-ui/core/ListItemText";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import BookmarksIcon from "@material-ui/icons/Bookmarks";
 import MenuBookIcon from "@material-ui/icons/MenuBook";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import ClearIcon from "@material-ui/icons/Clear";
 
 function HideOnScroll(props) {
   const { children, window } = props;
-  // Note that you normally won't need to set the window ref as useScrollTrigger
-  // will default to window.
-  // This is only being set here because the demo is in an iframe.
   const trigger = useScrollTrigger({ target: window ? window() : undefined });
 
   return (
@@ -43,23 +45,23 @@ function HideOnScroll(props) {
 
 export const Header = (props) => {
   const classes = useStyles();
-  const dispatch = useDispatch();
   let history = useHistory();
-
+  const searchInput = useRef(null);
+  const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
+
   const { favoritesMovie } = useSelector((state) => state.movie);
   const [toggle, setToggle] = useState(false);
 
   const handlerSearch = debounce((searchText) => {
-    setSearchTextLS(searchText);
-    dispatch(setSearchedMovie());
+    dispatch(setSearchInit());
+    dispatch(setSearchedMovie(searchText));
     history.push("/search");
   }, 1000);
 
   return (
     <>
       <div className={classes.root}>
-        {/* <CssBaseline /> */}
         <HideOnScroll {...props}>
           <AppBar position="fixed">
             <Toolbar>
@@ -80,6 +82,17 @@ export const Header = (props) => {
                   <SearchIcon />
                 </div>
                 <InputBase
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="clear"
+                        onClick={() => (searchInput.current.value = "")}
+                      >
+                        <ClearIcon />
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                  inputRef={searchInput}
                   onChange={(e) => handlerSearch(e.target.value)}
                   placeholder="Search…"
                   classes={{
@@ -89,7 +102,9 @@ export const Header = (props) => {
                   inputProps={{ "aria-label": "search" }}
                 />
               </div>
-
+              {/*  */}
+              {/*  */}
+              {/*  */}
               <Button
                 onClick={() => {
                   isAuthUser(false);

@@ -1,28 +1,10 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 export const useStyles = makeStyles((theme) => ({
-  root: {
-    // margin: 40,
-    // flexWrap: "wrap",
-    // justifyContent: "space-around",
-  },
-  media: {
-    minHeight: 250,
-    paddingTop: "56.25%", // 16:9
-  },
-  cardHeader: {
-    height: 90,
-    padding: 5,
-  },
-
   cardButton: {
     margin: theme.spacing(1),
   },
-  //
-  //
-  //
-  //
-  //
+
   wrapper: {
     margin: 40,
     display: "flex",
@@ -51,10 +33,5 @@ export const useStyles = makeStyles((theme) => ({
     "& div:nth-child(2)": {
       paddingLeft: 15,
     },
-  },
-  additional: {
-    margin: "0 auto",
-    maxWidth: 1100,
-    marginTop: 30,
   },
 }));

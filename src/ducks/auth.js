@@ -2,8 +2,7 @@ import { getIsAuthUser } from "../utils/storage";
 
 const SET_USER_LOG_IN = "USER_LOGIN_IN";
 const SET_USER_LOG_OUT = "USER_LOGIN_OUT";
-//
-//
+
 const initialState = {
   user: {
     auth: false,
@@ -11,8 +10,7 @@ const initialState = {
     isAuth: getIsAuthUser(),
   },
 };
-//
-//
+
 //  Reducer
 const auth = (state = initialState, { type, payload }) => {
   switch (type) {
@@ -40,11 +38,6 @@ const auth = (state = initialState, { type, payload }) => {
 };
 export default auth;
 
-// export default () => {};
-
-//
-//
-//
 // Action Creator
 export const authSucces = (payload) => {
   return (dispatch) => {

@@ -11,14 +11,14 @@ export const Search = () => {
   const dispatch = useDispatch();
   const classes = useStyles();
 
-  const { searchedCurrentPage, searchedMovieList } = useSelector(
+  const { searchedCurrentPage, searchedMovieList, searchText } = useSelector(
     (state) => state.movie.searchedMovie
   );
 
   useEffect(() => {
-    console.log("render Search");
-    dispatch(setSearchedMovie());
-  }, [dispatch, searchedCurrentPage]);
+    console.log("render");
+    dispatch(setSearchedMovie(searchText));
+  }, [dispatch, searchText, searchedCurrentPage]);
 
   return (
     <>

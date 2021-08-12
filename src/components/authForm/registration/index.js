@@ -3,16 +3,13 @@ import { useForm } from "react-hook-form";
 import { Input } from "../../ui/inputs";
 import { UiButton } from "../../ui/buttons";
 import { Form } from "../../ui/form";
-
 import { useDispatch } from "react-redux";
 import { authLogOut, authSucces } from "../../../ducks/auth";
-
 import { getUsers, isAuthUser } from "../../../utils/storage";
 import { useHistory } from "react-router-dom";
 
 export const RegistrationForm = () => {
   let history = useHistory();
-
   const dispatch = useDispatch();
 
   const {

@@ -1,10 +1,8 @@
 import { Button, Card } from "@material-ui/core";
 import React, { useEffect } from "react";
-
 import { useDispatch, useSelector } from "react-redux";
 import { useStyles } from "./style";
 import { getMovieDetailById, setMovieDetailById } from "../../ducks/movie";
-
 import { poster, noImage } from "../../config/config";
 import { useHistory, useRouteMatch } from "react-router-dom";
 

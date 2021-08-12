@@ -3,18 +3,14 @@ import { useForm } from "react-hook-form";
 import { Input } from "../../ui/inputs";
 import { UiButton } from "../../ui/buttons";
 import { Form } from "../../ui/form";
-
 import { useDispatch } from "react-redux";
 import { authSucces } from "../../../ducks/auth";
-
 import { useHistory } from "react-router-dom";
-
 import { delay } from "../../../utils/helpers";
 import { getUsers, isAuthUser } from "../../../utils/storage";
 
 export const LoginForm = () => {
   let history = useHistory();
-
   const dispatch = useDispatch();
 
   const {
@@ -43,7 +39,6 @@ export const LoginForm = () => {
       if (currentUser) {
         isAuthUser(login);
         dispatch(authSucces({ login }));
-        console.log(login);
         history.push("/main");
       } else {
         isAuthUser(false);

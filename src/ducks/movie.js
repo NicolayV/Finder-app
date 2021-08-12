@@ -1,18 +1,15 @@
 import { getMovies, getDetails, getSearchMovie } from "../apiMovies";
-import { getSearchTextLS, setFavoritesMovieLS } from "../utils/storage";
+import { setFavoritesMovieLS } from "../utils/storage";
 
 const SET_TRENDING_MOVIE_LIST = "SET_TRENDING_MOVIE_LIST";
 const SET_TRENDING_MOVIE_LIST_PAGE = "SET_TRENDING_MOVIE_LIST_PAGE";
-//
 const SET_SEARCH_TEXT = "SET_SEARCH_TEXT";
+const SET_SEARCH_MOVIE_INIT = "SET_SEARCH_MOVIE_INIT";
 const SET_SEARCHED_MOVIE_LIST = "SET_SEARCHED_MOVIE_LIST";
 const SET_SEARCHED_MOVIE_LIST_PAGE = "SET_SEARCHED_MOVIE_LIST_PAGE";
-//
 const SET_MOVIE_DETAIL_BY_ID = "SET_MOVIE_DETAIL_BY_ID";
-//
 const SET_FAVORITES_MOVIE_BY_ID = "SET_FAVORITES_MOVIE_BY_ID";
-//
-//
+
 const initialState = {
   trendingMovie: {
     trendingCurrentPage: 1,
@@ -28,8 +25,7 @@ const initialState = {
   currentMovieDetail: [],
   favoritesMovie: [],
 };
-//
-//
+
 // Reducer
 const movie = (state = initialState, { type, payload }) => {
   switch (type) {
@@ -50,6 +46,17 @@ const movie = (state = initialState, { type, payload }) => {
           total_result: payload.total_results,
         },
       };
+    case SET_SEARCH_MOVIE_INIT:
+      return {
+        ...state,
+        searchedMovie: {
+          searchText: "",
+          searchedCurrentPage: 1,
+          searchedMovieList: [],
+          total_result: 0,
+        },
+      };
+
     case SET_SEARCH_TEXT:
       return {
         ...state,
@@ -90,8 +97,7 @@ const movie = (state = initialState, { type, payload }) => {
   }
 };
 export default movie;
-//
-//
+
 // Action Creator
 export const setTrendingMovieListPage = (payload) => {
   return (dispatch) => {
@@ -110,6 +116,13 @@ export const setTrendingMovieList = (payload) => {
   };
 };
 
+export const setSearchInit = () => {
+  return (dispatch) => {
+    dispatch({
+      type: SET_SEARCH_MOVIE_INIT,
+    });
+  };
+};
 export const setSearchText = (payload) => {
   return (dispatch) => {
     dispatch({
@@ -152,73 +165,55 @@ export const setFavoritesMovieById = (payload) => {
     });
   };
 };
-//
-//
+
 // Side effects
 export const setCurrentTrendingMovieList = () => {
-  return (dispath, getState) => {
+  return (dispatch, getState) => {
     const { trendingCurrentPage, trendingMovieList } =
       getState().movie.trendingMovie;
 
     getMovies(trendingCurrentPage).then(({ data }) => {
-      data.results = trendingMovieList.concat(data.results);
-      dispath(setTrendingMovieList(data));
+      data.results = [...trendingMovieList, ...data.results];
+      dispatch(setTrendingMovieList(data));
     });
   };
 };
-//
-//
-export const setSearchedMovie = () => {
-  return (dispath, getState) => {
-    const currentSearchText = getSearchTextLS();
-    // console.log("currentSearchText ", currentSearchText);
-    const prevSearchText = getState().movie.searchedMovie.searchText;
-    // console.log("prevSearchText ", prevSearchText);
-    dispath(setSearchText(currentSearchText));
+
+export const setSearchedMovie = (props) => {
+  return (dispatch, getState) => {
+    dispatch(setSearchText(props));
     const { searchedCurrentPage, searchedMovieList, searchText } =
       getState().movie.searchedMovie;
 
-    if (currentSearchText === prevSearchText) {
-      getSearchMovie(searchText, searchedCurrentPage).then(({ data }) => {
-        data.results = searchedMovieList.concat(data.results);
-        dispath(setSearchedMovieList(data));
-      });
-    } else {
-      getSearchMovie(searchText, searchedCurrentPage).then(({ data }) => {
-        dispath(setSearchedMovieList(data));
-      });
-    }
-  };
-};
-//
-//
-export const getMovieDetailById = (id) => {
-  return (dispath) => {
-    getDetails(id).then(({ data }) => {
-      dispath(setMovieDetailById(data));
+    getSearchMovie(searchText, searchedCurrentPage).then(({ data }) => {
+      data.results = [...searchedMovieList, ...data.results];
+      dispatch(setSearchedMovieList(data));
     });
   };
 };
-//
-//
+
+export const getMovieDetailById = (id) => {
+  return (dispatch) => {
+    getDetails(id).then(({ data }) => {
+      dispatch(setMovieDetailById(data));
+    });
+  };
+};
+
 export const setFavoritesMovie = (id) => {
-  return (dispath, getState) => {
+  return (dispatch, getState) => {
     const { favoritesMovie } = getState().movie;
     getDetails(id).then(({ data }) => {
       const repeatCheck = favoritesMovie.some((item) => item.id === id);
       if (!repeatCheck) {
         favoritesMovie.push(data);
         setFavoritesMovieLS(favoritesMovie);
-        dispath(setFavoritesMovieById(favoritesMovie));
+        dispatch(setFavoritesMovieById(favoritesMovie));
       } else {
         const withoutFavMovie = favoritesMovie.filter((item) => item.id !== id);
         setFavoritesMovieLS(withoutFavMovie);
-        dispath(setFavoritesMovieById(withoutFavMovie));
+        dispatch(setFavoritesMovieById(withoutFavMovie));
       }
     });
   };
 };
-//
-//
-//
-//
