@@ -17,7 +17,13 @@ const GuardRoute = ({ children }) => {
   return isAuth ? children : <Redirect to="/" />;
 };
 
-export default function App() {
+// navLinks router dom
+// navLinks with useContext
+// redux state to 1st level
+// header remake to difrent component
+// in async funciton add cath error and add animation or text when data base is loading
+
+const App = () => {
   return (
     <>
       <Router>
@@ -43,4 +49,6 @@ export default function App() {
       </Router>
     </>
   );
-}
+};
+
+export default App;

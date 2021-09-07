@@ -9,6 +9,7 @@ import {
   setFavoritesMovieById,
   setCurrentTrendingMovieList,
 } from "../../ducks/movie";
+import { UnendingScrollM } from "../../components/ui/unendingScroll";
 
 export const Favorite = () => {
   const classes = useStyles();
@@ -31,25 +32,27 @@ export const Favorite = () => {
     <>
       <Header />
       <Container className={classes.root}>
-        {favoritesMovie &&
-          favoritesMovie.map(
-            ({
-              id,
-              poster_path,
-              title,
-              name,
-              release_date,
-              first_air_date,
-            }) => (
-              <SingleContent
-                key={id}
-                id={id}
-                poster={poster_path}
-                title={title || name}
-                date={release_date || first_air_date}
-              />
-            )
-          )}
+        <UnendingScrollM>
+          {favoritesMovie &&
+            favoritesMovie.map(
+              ({
+                id,
+                poster_path,
+                title,
+                name,
+                release_date,
+                first_air_date,
+              }) => (
+                <SingleContent
+                  key={id}
+                  id={id}
+                  poster={poster_path}
+                  title={title || name}
+                  date={release_date || first_air_date}
+                />
+              )
+            )}
+        </UnendingScrollM>
       </Container>
     </>
   );
