@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { useStyles } from "./style";
 import { authLogOut } from "../../../ducks/auth";
-import { setIsAuth } from "../../../utils/storage";
+import { setLoggedUserLS } from "../../../utils/storage";
 import { AppBar, Toolbar, Typography, Button } from "@material-ui/core";
 import NavLinks from "../navlinks";
 import { DrawerButton, SideDrawer } from "../drawer";
@@ -14,8 +14,7 @@ export const Header = (props) => {
   const classes = useStyles();
   let history = useHistory();
   const dispatch = useDispatch();
-  // const { user } = useSelector((state) => state.auth);
-  const { userLogin, isAuth } = useSelector((state) => state.auth);
+  const userLogin = useSelector((state) => state.auth.userLogin);
 
   const [drawerToggle, setDrawerToggle] = useState(false);
   const drawerToggleHandler = () =>
@@ -30,8 +29,7 @@ export const Header = (props) => {
               <DrawerButton open={drawerToggleHandler} />
 
               <Typography variant="h6" className={classes.title}>
-                {/* Login: {user.userLogin || user.isAuth} */}
-                Login: {userLogin || isAuth}
+                Login: {userLogin}
               </Typography>
 
               <NavLinks />
@@ -39,7 +37,7 @@ export const Header = (props) => {
 
               <Button
                 onClick={() => {
-                  setIsAuth(false);
+                  setLoggedUserLS(false);
                   dispatch(authLogOut());
                   return setTimeout(() => history.push("/"), 500);
                 }}

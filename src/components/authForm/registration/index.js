@@ -4,8 +4,8 @@ import { Input } from "../../ui/inputs";
 import { UiButton } from "../../ui/buttons";
 import { Form } from "../../ui/form";
 import { useDispatch } from "react-redux";
-import { authLogOut, authSucces } from "../../../ducks/auth";
-import { getUsers, setIsAuth } from "../../../utils/storage";
+import { authLogOut, authLogIn } from "../../../ducks/auth";
+import { getUsersLS, setLoggedUserLS } from "../../../utils/storage";
 import { useHistory } from "react-router-dom";
 
 export const RegistrationForm = () => {
@@ -25,19 +25,19 @@ export const RegistrationForm = () => {
   password.current = watch("password", "");
 
   const onSubmit = ({ login, password, email }) => {
-    const users = getUsers();
+    const users = getUsersLS();
     if (
       users &&
       users.find((user) => user.login === login && user.password === password)
     ) {
-      setIsAuth(false);
+      setLoggedUserLS(false);
       dispatch(authLogOut());
       setError("wasLogged");
     } else {
       users.push({ login, password, email });
       localStorage.setItem("users", JSON.stringify(users));
-      setIsAuth(login);
-      dispatch(authSucces({ login }));
+      setLoggedUserLS(login);
+      dispatch(authLogIn(login));
       history.push("/main");
     }
   };

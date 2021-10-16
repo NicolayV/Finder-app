@@ -4,24 +4,25 @@ import { SingleContent } from "../../components/contentCard";
 import { Container } from "@material-ui/core";
 import { UnendingScrollM } from "../../components/ui/unendingScroll";
 import { useStyles } from "./style";
-import { getFavoritesMovieLS, getIsAuthUser } from "../../utils/storage";
+import { getFavoritesMovieLS, getLoggedUserLS } from "../../utils/storage";
 import {
   setFavoritesMovieById,
   setCurrentTrendingMovieList,
 } from "../../ducks/movie";
-import { authSucces } from "../../ducks/auth";
+import { authLogIn } from "../../ducks/auth";
 
 export const Movies = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const loggedIn = useSelector((state) => state.auth.loggedIn);
 
   useEffect(() => {
-    const isAuth = getIsAuthUser();
-    console.log(isAuth);
-    if (isAuth) {
-      dispatch(authSucces({ isAuth }));
+    const loggedUserLS = getLoggedUserLS();
+
+    if (loggedUserLS && !loggedIn) {
+      dispatch(authLogIn(loggedUserLS));
     }
-  }, []);
+  }, [dispatch, loggedIn]);
 
   const { trendingCurrentPage, trendingMovieList } = useSelector(
     (state) => state.movie

@@ -4,10 +4,10 @@ import { Input } from "../../ui/inputs";
 import { UiButton } from "../../ui/buttons";
 import { Form } from "../../ui/form";
 import { useDispatch } from "react-redux";
-import { authSucces } from "../../../ducks/auth";
+import { authLogIn } from "../../../ducks/auth";
 import { useHistory } from "react-router-dom";
 import { delay } from "../../../utils/helpers";
-import { getUsers, setIsAuth } from "../../../utils/storage";
+import { getUsersLS, setLoggedUserLS } from "../../../utils/storage";
 
 export const LoginForm = () => {
   let history = useHistory();
@@ -28,7 +28,7 @@ export const LoginForm = () => {
 
     delay(500).then(() => {
       setIsLoging(false);
-      const users = getUsers();
+      const users = getUsersLS();
 
       const currentUser =
         users &&
@@ -37,11 +37,11 @@ export const LoginForm = () => {
         );
 
       if (currentUser) {
-        setIsAuth(login);
-        dispatch(authSucces({ login }));
+        setLoggedUserLS(login);
+        dispatch(authLogIn(login));
         history.push("/main");
       } else {
-        setIsAuth(false);
+        setLoggedUserLS(false);
         setError("auth");
       }
     });

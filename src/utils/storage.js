@@ -1,8 +1,10 @@
 // LocalStorage
-export const getUsers = () => JSON.parse(localStorage.getItem("users")) || [];
-export const getIsAuthUser = () =>
+export const getUsersLS = () => JSON.parse(localStorage.getItem("users")) || [];
+
+export const getLoggedUserLS = () =>
   JSON.parse(localStorage.getItem("isAuthUser"));
-export const setIsAuth = (props) =>
+
+export const setLoggedUserLS = (props) =>
   localStorage.setItem("isAuthUser", JSON.stringify(props));
 
 // Favorite movie

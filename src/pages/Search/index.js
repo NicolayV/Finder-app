@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { SingleContent } from "../../components/contentCard/index";
-import { Header } from "../../components/ui/header";
 import { Container } from "@material-ui/core";
 import { UnendingScrollS } from "../../components/ui/unendingScroll";
 import { useStyles } from "./style";

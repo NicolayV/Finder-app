@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
 import {
   BrowserRouter as Router,
   Switch,
@@ -7,22 +6,15 @@ import {
   Redirect,
 } from "react-router-dom";
 import { Header } from "./components/ui/header";
-// import { setIsAuth } from "./ducks/auth";
 import { MainForm } from "./pages/Auth";
 import { Favorite } from "./pages/Favorite";
 import { Movies } from "./pages/Main";
 import { MovieDetails } from "./pages/MovieCard";
 import { Search } from "./pages/Search";
-import { getIsAuthUser } from "./utils/storage";
+import { getLoggedUserLS } from "./utils/storage";
 
 const GuardRoute = ({ children }) => {
-  // const dispatch = useDispatch();
-  // useEffect(() => {
-  //   dispatch(setIsAuth());
-  // }, [dispatch]);
-  const isAuth = getIsAuthUser();
-  // console.log(isAuth);
-  // const isAuth = useSelector((state) => state.auth.isAuth);
+  const isAuth = getLoggedUserLS();
   return isAuth ? children : <Redirect to="/" />;
 };
 
