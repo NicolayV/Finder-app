@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import { authSucces } from "../../../ducks/auth";
 import { useHistory } from "react-router-dom";
 import { delay } from "../../../utils/helpers";
-import { getUsers, isAuthUser } from "../../../utils/storage";
+import { getUsers, setIsAuth } from "../../../utils/storage";
 
 export const LoginForm = () => {
   let history = useHistory();
@@ -37,11 +37,11 @@ export const LoginForm = () => {
         );
 
       if (currentUser) {
-        isAuthUser(login);
+        setIsAuth(login);
         dispatch(authSucces({ login }));
         history.push("/main");
       } else {
-        isAuthUser(false);
+        setIsAuth(false);
         setError("auth");
       }
     });

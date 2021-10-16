@@ -1,14 +1,14 @@
+// import { useHistory } from "react-router";
 import { getIsAuthUser } from "../utils/storage";
 
-const SET_USER_LOG_IN = "USER_LOGIN_IN";
-const SET_USER_LOG_OUT = "USER_LOGIN_OUT";
+const SET_USER_LOG_IN = "SET_USER_LOGIN_IN";
+const SET_USER_LOG_OUT = "SET_USER_LOGIN_OUT";
+// const IS_AUTH_USER = "IS_AUTH_USER";
 
 const initialState = {
-  user: {
-    auth: false,
-    userLogin: null,
-    isAuth: getIsAuthUser(),
-  },
+  userAuth: false,
+  userLogin: null,
+  isAuth: getIsAuthUser(),
 };
 
 //  Reducer
@@ -17,21 +17,26 @@ const auth = (state = initialState, { type, payload }) => {
     case SET_USER_LOG_IN:
       return {
         ...state,
-        user: {
-          auth: true,
-          userLogin: payload.login,
-          isAuth: getIsAuthUser(),
-        },
+        userAuth: true,
+        userLogin: payload.login,
+        //isAuth: payload.user,
+        isAuth: getIsAuthUser(),
       };
     case SET_USER_LOG_OUT:
       return {
         ...state,
-        user: {
-          auth: false,
-          userLogin: null,
-          isAuth: getIsAuthUser(),
-        },
+        userAuth: false,
+        userLogin: null,
+        // isAuth: null,
+        isAuth: getIsAuthUser(),
       };
+    // case IS_AUTH_USER:
+    //   return {
+    //     ...state,
+    //     userAuth: false,
+    //     userLogin: payload.user,
+    //     isAuth: payload.user,
+    //   };
     default:
       return state;
   }
@@ -54,3 +59,14 @@ export const authLogOut = () => {
     });
   };
 };
+
+// Side effects
+// export const setIsAuth = (payload) => {
+//   return (dispatch) => {
+//     const user = getIsAuthUser();
+//     dispatch({
+//       type: IS_AUTH_USER,
+//       payload: user,
+//     });
+//   };
+// };

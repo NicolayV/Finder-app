@@ -12,7 +12,7 @@ export const Search = () => {
   const classes = useStyles();
 
   const { searchedCurrentPage, searchedMovieList, searchText } = useSelector(
-    (state) => state.movie.searchedMovie
+    (state) => state.movie
   );
 
   useEffect(() => {
@@ -21,31 +21,28 @@ export const Search = () => {
   }, [dispatch, searchText, searchedCurrentPage]);
 
   return (
-    <>
-      <Header />
-      <Container className={classes.root}>
-        <UnendingScrollS>
-          {searchedMovieList &&
-            searchedMovieList.map(
-              ({
-                id,
-                poster_path,
-                title,
-                name,
-                release_date,
-                first_air_date,
-              }) => (
-                <SingleContent
-                  key={id}
-                  id={id}
-                  poster={poster_path}
-                  title={title || name}
-                  date={release_date || first_air_date}
-                />
-              )
-            )}
-        </UnendingScrollS>
-      </Container>
-    </>
+    <Container className={classes.root}>
+      <UnendingScrollS>
+        {searchedMovieList &&
+          searchedMovieList.map(
+            ({
+              id,
+              poster_path,
+              title,
+              name,
+              release_date,
+              first_air_date,
+            }) => (
+              <SingleContent
+                key={id}
+                id={id}
+                poster={poster_path}
+                title={title || name}
+                date={release_date || first_air_date}
+              />
+            )
+          )}
+      </UnendingScrollS>
+    </Container>
   );
 };

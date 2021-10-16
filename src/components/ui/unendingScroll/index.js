@@ -12,7 +12,7 @@ export const UnendingScrollM = ({ children }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { trendingMovieList, trendingCurrentPage } = useSelector(
-    (state) => state.movie.trendingMovie
+    (state) => state.movie
   );
 
   return (
@@ -32,7 +32,7 @@ export const UnendingScrollS = ({ children }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { searchedCurrentPage, searchedMovieList } = useSelector(
-    (state) => state.movie.searchedMovie
+    (state) => state.movie
   );
 
   return (

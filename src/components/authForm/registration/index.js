@@ -5,7 +5,7 @@ import { UiButton } from "../../ui/buttons";
 import { Form } from "../../ui/form";
 import { useDispatch } from "react-redux";
 import { authLogOut, authSucces } from "../../../ducks/auth";
-import { getUsers, isAuthUser } from "../../../utils/storage";
+import { getUsers, setIsAuth } from "../../../utils/storage";
 import { useHistory } from "react-router-dom";
 
 export const RegistrationForm = () => {
@@ -30,13 +30,13 @@ export const RegistrationForm = () => {
       users &&
       users.find((user) => user.login === login && user.password === password)
     ) {
-      isAuthUser(false);
+      setIsAuth(false);
       dispatch(authLogOut());
       setError("wasLogged");
     } else {
       users.push({ login, password, email });
       localStorage.setItem("users", JSON.stringify(users));
-      isAuthUser(login);
+      setIsAuth(login);
       dispatch(authSucces({ login }));
       history.push("/main");
     }

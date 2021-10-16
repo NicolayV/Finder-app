@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { setFavoritesMovie } from "../../../ducks/movie";
@@ -11,20 +11,17 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import BookmarksIcon from "@material-ui/icons/Bookmarks";
 import MenuBookIcon from "@material-ui/icons/MenuBook";
 
-export const SideDrawer = ({ drawerToggle, setDrawerToggle }) => {
+import SubscriptionsIcon from "@material-ui/icons/Subscriptions";
+import { useStyles } from "./style";
+
+export const SideDrawer = ({ open, onClose }) => {
   let history = useHistory();
   const dispatch = useDispatch();
 
   const { favoritesMovie } = useSelector((state) => state.movie);
-  // const [toggle, setToggle] = useState(false);
 
   return (
-    <Drawer
-      // open={toggle}
-      open={drawerToggle}
-      // onClose={() => setToggle((prevToggle) => !prevToggle)}
-      onClose={setDrawerToggle}
-    >
+    <Drawer open={open} onClose={onClose}>
       <ListSubheader>Favorite films</ListSubheader>
       <Divider />
       <List>
@@ -60,5 +57,21 @@ export const SideDrawer = ({ drawerToggle, setDrawerToggle }) => {
         </ListItem>
       </List>
     </Drawer>
+  );
+};
+
+export const DrawerButton = ({ open }) => {
+  const classes = useStyles();
+
+  return (
+    <IconButton
+      edge="start"
+      className={classes.menuButton}
+      color="secondary"
+      aria-label="menu"
+      onClick={open}
+    >
+      <SubscriptionsIcon />
+    </IconButton>
   );
 };

@@ -11,17 +11,13 @@ const SET_MOVIE_DETAIL_BY_ID = "SET_MOVIE_DETAIL_BY_ID";
 const SET_FAVORITES_MOVIE_BY_ID = "SET_FAVORITES_MOVIE_BY_ID";
 
 const initialState = {
-  trendingMovie: {
-    trendingCurrentPage: 1,
-    trendingMovieList: [],
-    total_result: 0,
-  },
-  searchedMovie: {
-    searchText: "",
-    searchedCurrentPage: 1,
-    searchedMovieList: [],
-    total_result: 0,
-  },
+  trendingCurrentPage: 1,
+  trendingMovieList: [],
+  trending_total_result: 0,
+  searchText: "",
+  searchedCurrentPage: 1,
+  searchedMovieList: [],
+  searched_total_result: 0,
   currentMovieDetail: [],
   favoritesMovie: [],
 };
@@ -32,55 +28,39 @@ const movie = (state = initialState, { type, payload }) => {
     case SET_TRENDING_MOVIE_LIST_PAGE:
       return {
         ...state,
-        trendingMovie: {
-          ...state.trendingMovie,
-          trendingCurrentPage: payload,
-        },
+        trendingCurrentPage: payload,
       };
     case SET_TRENDING_MOVIE_LIST:
       return {
         ...state,
-        trendingMovie: {
-          ...state.trendingMovie,
-          trendingMovieList: payload.results,
-          total_result: payload.total_results,
-        },
+        trendingMovieList: payload.results,
+        trending_total_result: payload.total_results,
       };
     case SET_SEARCH_MOVIE_INIT:
       return {
         ...state,
-        searchedMovie: {
-          searchText: "",
-          searchedCurrentPage: 1,
-          searchedMovieList: [],
-          total_result: 0,
-        },
+        searchText: "",
+        searchedCurrentPage: 1,
+        searchedMovieList: [],
+        search_total_result: 0,
       };
 
     case SET_SEARCH_TEXT:
       return {
         ...state,
-        searchedMovie: {
-          ...state.searchedMovie,
-          searchText: payload,
-        },
+        searchText: payload,
       };
+
     case SET_SEARCHED_MOVIE_LIST_PAGE:
       return {
         ...state,
-        searchedMovie: {
-          ...state.searchedMovie,
-          searchedCurrentPage: payload,
-        },
+        searchedCurrentPage: payload,
       };
     case SET_SEARCHED_MOVIE_LIST:
       return {
         ...state,
-        searchedMovie: {
-          ...state.searchedMovie,
-          searchedMovieList: payload.results,
-          total_result: payload.total_results,
-        },
+        searchedMovieList: payload.results,
+        search_total_result: payload.total_results,
       };
     case SET_MOVIE_DETAIL_BY_ID:
       return {
@@ -169,8 +149,7 @@ export const setFavoritesMovieById = (payload) => {
 // Side effects
 export const setCurrentTrendingMovieList = () => {
   return (dispatch, getState) => {
-    const { trendingCurrentPage, trendingMovieList } =
-      getState().movie.trendingMovie;
+    const { trendingCurrentPage, trendingMovieList } = getState().movie;
 
     getMovies(trendingCurrentPage).then(({ data }) => {
       data.results = [...trendingMovieList, ...data.results];
@@ -183,7 +162,7 @@ export const setSearchedMovie = (props) => {
   return (dispatch, getState) => {
     dispatch(setSearchText(props));
     const { searchedCurrentPage, searchedMovieList, searchText } =
-      getState().movie.searchedMovie;
+      getState().movie;
 
     getSearchMovie(searchText, searchedCurrentPage).then(({ data }) => {
       data.results = [...searchedMovieList, ...data.results];

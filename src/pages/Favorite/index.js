@@ -15,9 +15,8 @@ export const Favorite = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const { favoritesMovie } = useSelector((state) => state.movie);
-  const { trendingCurrentPage } = useSelector(
-    (state) => state.movie.trendingMovie
+  const { favoritesMovie, trendingCurrentPage } = useSelector(
+    (state) => state.movie
   );
   useEffect(() => {
     dispatch(setCurrentTrendingMovieList());
@@ -29,31 +28,28 @@ export const Favorite = () => {
   }, [dispatch]);
 
   return (
-    <>
-      <Header />
-      <Container className={classes.root}>
-        <UnendingScrollM>
-          {favoritesMovie &&
-            favoritesMovie.map(
-              ({
-                id,
-                poster_path,
-                title,
-                name,
-                release_date,
-                first_air_date,
-              }) => (
-                <SingleContent
-                  key={id}
-                  id={id}
-                  poster={poster_path}
-                  title={title || name}
-                  date={release_date || first_air_date}
-                />
-              )
-            )}
-        </UnendingScrollM>
-      </Container>
-    </>
+    <Container className={classes.root}>
+      <UnendingScrollM>
+        {favoritesMovie &&
+          favoritesMovie.map(
+            ({
+              id,
+              poster_path,
+              title,
+              name,
+              release_date,
+              first_air_date,
+            }) => (
+              <SingleContent
+                key={id}
+                id={id}
+                poster={poster_path}
+                title={title || name}
+                date={release_date || first_air_date}
+              />
+            )
+          )}
+      </UnendingScrollM>
+    </Container>
   );
 };
