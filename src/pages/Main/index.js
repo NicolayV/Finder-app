@@ -12,6 +12,7 @@ import {
 import { authLogIn } from "../../ducks/auth";
 
 export const Movies = () => {
+  console.log("mainrender");
   const classes = useStyles();
   const dispatch = useDispatch();
   const loggedIn = useSelector((state) => state.auth.loggedIn);
