@@ -17,54 +17,69 @@ import { Search } from "./Search";
 import { getLoggedUserLS } from "../utils/storage";
 import SignUp from "./SignUp";
 
-// const GuardRoute = ({ children }) => {
-//   const isAuth = getLoggedUserLS();
-//   return isAuth ? children : <Redirect to="/" />;
+const GuardRoute = ({ children }) => {
+  const isAuth = getLoggedUserLS();
+  return isAuth ? children : <Redirect to="/" />;
+};
+
+// const PrivateRoute = ({ component: Component, ...rest }) => {
+//   const isAuth = !!getLoggedUserLS();
+//   console.log(isAuth);
+
+//   return (
+//     <Route
+//       {...rest}
+//       render={(props) =>
+//         isAuth === true ? (
+//           <Component {...props} />
+//         ) : (
+//           <Redirect
+//             to={{
+//               pathname: "/",
+//               state: { from: props.location },
+//             }}
+//           />
+//         )
+//       }
+//     />
+//   );
 // };
 
 const Pages = () => {
-  const isAuth = !!getLoggedUserLS();
+  // const isAuth = !!getLoggedUserLS();
+  // console.log(isAuth);
   return (
-    <>
-      <Router>
+    <Router>
+      <Switch>
         <Route exact path="/" componenet={MainForm} />
-        {/* <GuardRoute> */}
-        <Header />
-        <Switch>
-          <PrivateRoute isAuth={isAuth} path="/signup" component={SignUp} />
+        {/* <MainForm /> */}
+        <GuardRoute>
+          <Header></Header>
+          {/* <Switch> */}
+          {/* <Route path="/signup" component={MainForm} /> */}
           <Route path="/main" component={Movies} />
-          <PrivateRoute
-            isAuth={isAuth}
-            path="/film/:id"
-            component={MovieDetails}
-          />
-          <PrivateRoute isAuth={isAuth} path="/search" component={Search} />
-          <PrivateRoute isAuth={isAuth} path="/favorite" component={Favorite} />
+          <Route path="/film/:id" component={MovieDetails} />
+          <Route path="/search" component={Search} />
+          <Route path="/favorite" component={Favorite} />
           <Route path="*" component={NotFound} />
-        </Switch>
-        {/* </GuardRoute> */}
-      </Router>
-    </>
-  );
-};
-
-const PrivateRoute = ({ component: Component, isAuth, ...rest }) => {
-  return (
-    <Route
-      {...rest}
-      render={(props) =>
-        isAuth === true ? (
-          <Component {...props} />
-        ) : (
-          <Redirect
-            to={{
-              pathname: "/main",
-              state: { from: props.location },
-            }}
-          />
-        )
-      }
-    />
+          {/* </Switch> */}
+        </GuardRoute>
+      </Switch>
+    </Router>
+    // <>
+    //   <Router>
+    //     <Header>
+    //       <Switch>
+    //         <Route exact path="/" component={MainForm} />
+    //         <PrivateRoute path="/main" component={Movies} />
+    //         <PrivateRoute path="/film/:id" component={MovieDetails} />
+    //         <PrivateRoute path="/search" component={Search} />
+    //         <PrivateRoute path="/favorite" component={Favorite} />
+    //         {/* <PrivateRoute isAuth={isAuth} path="*" component={NotFound} /> */}
+    //       </Switch>
+    //     </Header>
+    //   </Router>
+    // </>
   );
 };
 

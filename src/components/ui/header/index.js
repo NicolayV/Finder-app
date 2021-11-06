@@ -48,6 +48,7 @@ export const Header = (props) => {
             </Toolbar>
           </AppBar>
         </HideOnScroll>
+        {props.children}
       </div>
 
       <SideDrawer open={drawerToggle} onClose={drawerToggleHandler} />

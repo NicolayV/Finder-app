@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { Grid, Paper, Tab, Tabs, AppBar } from "@material-ui/core";
-// import { LoginForm } from "../../components/authForm/login";
-// import { RegistrationForm } from "../../components/authForm/registration";
-import UserForm from "../../components/authForm/UserForm";
+import { LoginForm } from "../../components/authForm/login";
+import { RegistrationForm } from "../../components/authForm/registration";
 
 export const MainForm = () => {
   const [selectedTab, setSelectedTab] = useState(0);
@@ -19,11 +18,12 @@ export const MainForm = () => {
       <Paper elevation={20} style={{ width: 320 }}>
         <AppBar position="static">
           <Tabs variant="fullWidth" value={selectedTab} onChange={handleChange}>
-            <Tab label="Sign In" />
-            <Tab label="Sign Up" />
+            <Tab label="Log in" />
+            <Tab label="register" />
           </Tabs>
         </AppBar>
-        <UserForm formType={selectedTab === 0 ? "signIn" : "signUp"} />
+        {(selectedTab === 0 && <LoginForm />) ||
+          (selectedTab === 1 && <RegistrationForm />)}
       </Paper>
     </Grid>
   );
