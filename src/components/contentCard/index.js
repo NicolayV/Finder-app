@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { useStyles } from "./style";
 import { img_300, unavailable } from "../../config/config";
 import Card from "@material-ui/core/Card";
@@ -63,3 +63,5 @@ export const SingleContent = ({ poster, title, date, id }) => {
     </Card>
   );
 };
+// !! SingleContent has an error - dublicate key, after route to ather page
+// export const PureSingleContent = memo(SingleContent);

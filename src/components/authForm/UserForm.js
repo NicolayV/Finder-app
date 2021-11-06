@@ -164,11 +164,11 @@ const UserForm = ({ formType }) => {
               ))
             }
           />
-          <div>
+          {/* <div>
             <p>dssdf</p>
-          </div>
+          </div> */}
 
-          <input
+          {/* <input
             {...register("singleErrorInput", {
               required: "Обязательное полеeeee",
               minLength: 6,
@@ -181,7 +181,7 @@ const UserForm = ({ formType }) => {
             errors={errors}
             name="password"
             render={({ message }) => <p>{message}</p>}
-          />
+          /> */}
 
           <UiButton onClick={() => clearErrors("wasLogged")}>Submit</UiButton>
         </>
