@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setFavoritesMovie } from "../../ducks/movie";
 import { useHistory } from "react-router-dom";
 
-export const SingleContent = ({ poster, title, date, id }) => {
+const SingleContent = ({ poster, title, date, id }) => {
   const classes = useStyles();
   let history = useHistory();
   const dispatch = useDispatch();
@@ -64,4 +64,4 @@ export const SingleContent = ({ poster, title, date, id }) => {
   );
 };
 // !! SingleContent has an error - dublicate key, after route to ather page
-// export const PureSingleContent = memo(SingleContent);
+export const PureSingleContent = memo(SingleContent);

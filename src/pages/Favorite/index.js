@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { SingleContent } from "../../components/contentCard";
+import { PureSingleContent, SingleContent } from "../../components/contentCard";
 import { Container } from "@material-ui/core";
 import { useStyles } from "./style";
 import { getFavoritesMovieLS } from "../../utils/storage";
@@ -39,7 +39,7 @@ export const Favorite = () => {
               release_date,
               first_air_date,
             }) => (
-              <SingleContent
+              <PureSingleContent
                 key={id}
                 id={id}
                 poster={poster_path}
